@@ -2,12 +2,18 @@ const express = require("express")
 
 const { getAllProducts , getProduct, deleteProduct } = require('../queries/products')
 
+const reviews = require("./reviewsController")
+
+
 const product = express.Router()
 
+product.use("/:productId/reviews", reviews)
+
+
 product.get("/", async (req , res) => {
-    const getAllProducts = await getAllProducts()
-     if(getAllProducts[0]){
-         res.status(200).json(getAllProducts)
+    const getAllProduct = await getAllProducts()
+     if(getAllProduct[0]){
+         res.status(200).json(getAllProduct)
      }
      else{
          res.status(500).json({error: "server error"})
@@ -42,9 +48,6 @@ product.delete("/:id", async (req ,res) => {
  })
  
  
- 
- 
-
  
  
  module.exports = product

@@ -2,11 +2,14 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 
-app.use(express.json())
+const products = require("./controller/ProductController")
+
 app.use(cors())
 
+app.use(express.json())
 
 
+app.use("/products", products)
 
 app.get("/", (req , res) => {
     res.send("Welcome to the E-Commerce App")
