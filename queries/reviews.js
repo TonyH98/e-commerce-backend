@@ -28,8 +28,8 @@ const getReview = async (id) => {
 const createReview = async (review) => {
     try{
         const newReview = await db.one(
-            'INSERT INTO reviews (reviewer, title, content, rating, bookmark_id) VALUES ($1 , $2, $3, $4, $5) RETURNING *',
-            [review.reviewer, review.title, review.content, review.rating, review.bookmark_id]
+            'INSERT INTO reviews (reviewer, title, content, rating, product_id) VALUES ($1 , $2, $3, $4, $5) RETURNING *',
+            [review.reviewer, review.title, review.content, review.rating, review.product_id]
         )
         return newReview
     }
