@@ -50,19 +50,19 @@ catch(error){
 }
 
 
-// const updateBookmark = async (id, bookmark) => {
-//   try {
-//     const updatedBookmark = await db.one(
-//       "UPDATE bookmarks SET name=$1, url=$2, category=$3, is_favorite=$4 where id=$5 RETURNING *",
-//       [bookmark.name, bookmark.url, bookmark.category, bookmark.is_favorite, id]
-//     );
-//     return updatedBookmark;
-//   } catch (error) {
-//     return error;
-//   }
-// };
+const updateProducts = async (id, product) => {
+  try {
+    const updatedProduct = await db.one(
+      "UPDATE products SET product_name=$1, release_date=$2, image=$3, description=$4, price=$5 , category=$6, manufacturer=$7 WHERE id=$8 RETURNING *",
+      [product.product_name, product.release_date, product.image, product.description, product.price, product.category, product.manufacturer, id]
+    );
+    return updatedProduct;
+  } catch (error) {
+    return error;
+  }
+};
 
 
 
 
-module.exports = { getAllProducts , getProduct, deleteProduct};
+module.exports = { getAllProducts , getProduct, deleteProduct , updateProducts};
