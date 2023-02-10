@@ -53,8 +53,8 @@ catch(error){
 const updateProducts = async (id, product) => {
   try {
     const updatedProduct = await db.one(
-      "UPDATE products SET product_name=$1, release_date=$2, image=$3, description=$4, price=$5 , category=$6, manufacturer=$7 WHERE id=$8 RETURNING *",
-      [product.product_name, product.release_date, product.image, product.description, product.price, product.category, product.manufacturer, id]
+      "UPDATE products SET product_name=$1, release_date=$2, image=$3, description=$4, price=$5 , category=$6, manufacturer=$7, favorites=$8 WHERE id=$9 RETURNING *",
+      [product.product_name, product.release_date, product.image, product.description, product.price, product.category, product.manufacturer, product.favorites, id]
     );
     return updatedProduct;
   } catch (error) {
