@@ -12,16 +12,21 @@ product.use("/:productId/reviews", reviews)
 
 product.get("/", async (req , res) => {
     const getAllProduct = await getAllProducts()
-     if(getAllProduct[0]){
-         res.status(200).json(getAllProduct)
-     }
-     else{
-         res.status(500).json({error: "server error"})
-     }
+    
+    const filters = req.query;
+    const filteredUsers = getAllProduct.filter(user => {
+      let isValid = true;
+      for (key in filters) {
+        console.log(key, user[key], filters[key]);
+        isValid = isValid && user[key] == filters[key];
+      }
+      return isValid;
+    });
+    res.send(filteredUsers);
  
  })
- 
- 
+
+
  product.get("/:id", async (req , res) => {
      const {id} = req.params
      const product = await getProduct(id);
