@@ -13,6 +13,8 @@ description TEXT NOT NULL,
 price decimal (6,2) NOT NULL,
 category VARCHAR(50) NOT NULL,
 favorites BOOLEAN DEFAULT false,
+cart_counter INTEGER,
+CHECK(cart_counter >= 0),
 manufacturer TEXT NOT NULL
 );
 

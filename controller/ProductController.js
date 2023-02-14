@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { getAllProducts , getProduct, deleteProduct, updateProducts } = require('../queries/products')
+const { getAllProducts , getProduct, deleteProduct, updateProducts, createProduct } = require('../queries/products')
 
 const reviews = require("./reviewsController")
 
@@ -34,7 +34,14 @@ product.get("/", async (req , res) => {
  })
  
  
-
+ product.post("/",  async (req, res) => {
+    try {
+      const product = await createProduct(req.body);
+      res.json(product);
+    } catch (error) {
+      res.status(400).json({ error: error });
+    }
+  });
  
 product.delete("/:id", async (req ,res) => {
    const {id} = req.params

@@ -1,7 +1,7 @@
 \c commerce;  
 
-INSERT INTO products (product_name, release_date, image, description, price, category, manufacturer, favorites) VALUES
-('One Piece Vol 1', 'December 24, 1997', 'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg','The first volume of the highly acclaimed manga by Echiiro Oda', 9.99,'Anime/Manga','Shueisha', FALSE),
+INSERT INTO products (product_name, release_date, image, description, price, category, manufacturer, cart_counter, favorites) VALUES
+('One Piece Vol 1', 'December 24, 1997', 'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg','The first volume of the highly acclaimed manga by Echiiro Oda', 9.99,'Anime/Manga','Shueisha', 0 , FALSE),
  ('Gamecube Controller',
   'October 17, 2018',
    'https://m.media-amazon.com/images/I/71Pxz0BUbbL.jpg',
@@ -9,6 +9,7 @@ INSERT INTO products (product_name, release_date, image, description, price, cat
    69.99,
     'Video Games',
    'Nintendo',
+   0,
    FALSE),
 ('Metroid Dread',
 'October 8, 2021',
@@ -17,6 +18,7 @@ INSERT INTO products (product_name, release_date, image, description, price, cat
 59.99,
 'Video Games',
 'Nintendo',
+0,
 FALSE),
 ('Smash Ultimate',
 'December 7, 2018',
@@ -25,6 +27,7 @@ FALSE),
 59.99,
 'Video Games',
 'Nintendo',
+0,
 FALSE);
 
 

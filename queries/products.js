@@ -23,17 +23,18 @@ catch(error){
 }
 
 
-// const createProduct = async (bookmark) => {
-//     try {
-//       const newBookmark = await db.one(
-//         "INSERT INTO bookmarks (name, url, category, is_favorite) VALUES($1, $2, $3, $4) RETURNING *",
-//         [bookmark.name, bookmark.url, bookmark.category, bookmark.is_favorite]
-//       );
-//       return newBookmark;
-//     } catch (error) {
-//       return error;
-//     }
-//   };
+
+const createProduct = async (product) => {
+    try {
+      const newProduct = await db.one(
+        "INSERT INTO products (product_name, release_date , image, description, price, category, favorites, cart_counter, manufacturer) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *",
+        [product.product_name, product.release_date, product.image, product.description, product.price, product.category, product.favorites, product.cart_counter, product.manufacturer]
+      );
+      return newProduct;
+    } catch (error) {
+      return error;
+    }
+  };
 
 
 
@@ -53,8 +54,8 @@ catch(error){
 const updateProducts = async (id, product) => {
   try {
     const updatedProduct = await db.one(
-      "UPDATE products SET product_name=$1, release_date=$2, image=$3, description=$4, price=$5 , category=$6, manufacturer=$7, favorites=$8 WHERE id=$9 RETURNING *",
-      [product.product_name, product.release_date, product.image, product.description, product.price, product.category, product.manufacturer, product.favorites, id]
+      "UPDATE products SET product_name=$1, release_date=$2, image=$3, description=$4, price=$5 , category=$6, manufacturer=$7, favorites=$8, cart_counter=$9 WHERE id=$10 RETURNING *",
+      [product.product_name, product.release_date, product.image, product.description, product.price, product.category, product.manufacturer, product.favorites, product.cart_counter, id]
     );
     return updatedProduct;
   } catch (error) {
@@ -65,4 +66,4 @@ const updateProducts = async (id, product) => {
 
 
 
-module.exports = { getAllProducts , getProduct, deleteProduct , updateProducts};
+module.exports = { getAllProducts , getProduct, deleteProduct , updateProducts , createProduct};
