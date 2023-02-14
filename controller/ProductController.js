@@ -2,7 +2,7 @@ const express = require("express")
 
 const { getAllProducts , getProduct, deleteProduct, updateProducts, createProduct } = require('../queries/products')
 
-const reviews = require("./reviewsController")
+const reviews = require("./ReviewsController")
 
 
 const product = express.Router()
