@@ -17,8 +17,8 @@ product.get("/", async (req , res) => {
     const filteredUsers = getAllProduct.filter(user => {
       let isValid = true;
       for (key in filters) {
-        console.log(key, user[key], filters[key]);
-        isValid = isValid && user[key] == filters[key];
+       
+        isValid = isValid && user[key].toLowerCase() == filters[key].toLowerCase();
       }
       return isValid;
     });
