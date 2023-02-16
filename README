@@ -1,0 +1,4 @@
+Step getting the server to work:
+- Fork the repo
+- Clone the down the repo
+- After cloning the repo run npm i on your terminal to make sure all the packages are install
