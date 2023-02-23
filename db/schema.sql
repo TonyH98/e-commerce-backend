@@ -3,7 +3,7 @@ CREATE DATABASE commerce;
 
 \c commerce; 
 
-DROP TABLE IF EXISTS products;
+
 
 CREATE TABLE products (
 id SERIAL PRIMARY KEY,
@@ -18,6 +18,23 @@ cart_counter INTEGER,
 CHECK(cart_counter >= 0),
 manufacturer TEXT NOT NULL
 );
+
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(
+    id SERIAL PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+
+DROP TABLE IF EXISTS users_products;
+
+CREATE TABLE users_products(
+    created TIMESTAMP WITH TIME ZONE,
+    products_id INTEGER UNIQUE,
+    users_id INTEGER
+);
+
 
 
 DROP TABLE IF EXISTS reviews;

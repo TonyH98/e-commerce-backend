@@ -6,6 +6,7 @@ const app = express()
 
 
 const products = require("./controller/ProductController")
+const user = require("./controller/UsersController")
 
 app.use(cors())
 
@@ -14,7 +15,7 @@ app.use(express.json())
 
 app.use("/products", products)
 
-
+app.use("/users", user)
 
 app.get("/", (req , res) => {
     res.send("Welcome to the E-Commerce App")
