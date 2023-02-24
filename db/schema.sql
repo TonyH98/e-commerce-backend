@@ -30,8 +30,9 @@ CREATE TABLE users(
 DROP TABLE IF EXISTS users_products;
 
 CREATE TABLE users_products(
+    identification SERIAL PRIMARY KEY,
     created TIMESTAMP WITH TIME ZONE,
-    products_id INTEGER UNIQUE,
+    products_id INTEGER,
     users_id INTEGER
 );
 

@@ -1,6 +1,6 @@
 const express = require("express")
 
-const { getAllUsers , getUser , newUser, loginUser, addnewProductToUser, getAllProductsForUser } = require("../queries/users")
+const { getAllUsers , getUser , newUser, loginUser, addnewProductToUser, getAllProductsForUser, deleteProductFromUsers} = require("../queries/users")
 
 
 const users = express.Router({mergeParams: true})
@@ -72,6 +72,16 @@ users.post("/signup", async(req , res) => {
     
     })
     
+
+    users.delete("/:userId/products/:id", async (req , res) => {
+        const { userId, id } = req.params
+
+        const deleteProduct = await deleteProductFromUsers(userId , id)
+
+        if(deleteProduct.identification){
+            res.status(200).json(deleteProduct)
+        }
+    })
     
     users.get("/:userId/products", async (req , res) => {
         const {userId} = req.params;

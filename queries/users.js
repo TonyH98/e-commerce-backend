@@ -93,7 +93,7 @@ const getAllProductsForUser = async (id) => {
 
     try{
         const productsByUser = await db.any(
-            `SELECT products_id, users_id, product_name, release_date, image, description, price, category, favorites, cart_counter, manufacturer
+            `SELECT identification, products_id, users_id, product_name, release_date, image, description, price, category, favorites, cart_counter, manufacturer
             FROM users_products
             JOIN users
             ON users.id = users_products.users_id
@@ -109,7 +109,17 @@ const getAllProductsForUser = async (id) => {
     }
     }
 
+const deleteProductFromUsers = async (userId , id) => {
+    try{
+        const deleteProduct = await db.one(
+            'DELETE FROM users_products WHERE users_id = $1 AND identification = $2 RETURNING *', 
+            [userId, id]
+        )
+        return deleteProduct
+    }
+    catch(error){
+        return error
+    }
+}
 
-
-
-module.exports={getAllUsers , getUser , newUser, loginUser, addnewProductToUser, getAllProductsForUser}
+module.exports={getAllUsers , getUser , newUser, loginUser, addnewProductToUser, getAllProductsForUser, deleteProductFromUsers}
