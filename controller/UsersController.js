@@ -1,6 +1,13 @@
 const express = require("express")
 
-const { getAllUsers , getUser , newUser, loginUser, addnewProductToUser, getAllProductsForUser, deleteProductFromUsers} = require("../queries/users")
+const { getAllUsers 
+    , getUser 
+    , newUser
+    , loginUser
+    , addnewProductToUser
+    , getAllProductsForUser
+    , deleteProductFromUsers
+    , editCartUser} = require("../queries/users")
 
 
 const users = express.Router({mergeParams: true})
@@ -61,7 +68,7 @@ users.post("/signup", async(req , res) => {
         const {userId , productsId} = req.params;
     
         const successfulAdd = await addnewProductToUser(userId, productsId)
-        console.log(successfulAdd)
+       
     
         if(successfulAdd){
             res.json({message: "Product Added"});
@@ -73,10 +80,10 @@ users.post("/signup", async(req , res) => {
     })
     
 
-    users.delete("/:userId/products/:id", async (req , res) => {
-        const { userId, id } = req.params
+    users.delete("/:userId/products/:productsId", async (req , res) => {
+        const { userId, productsId } = req.params
 
-        const deleteProduct = await deleteProductFromUsers(userId , id)
+        const deleteProduct = await deleteProductFromUsers(userId , productsId)
 
         if(deleteProduct.identification){
             res.status(200).json(deleteProduct)
@@ -87,13 +94,16 @@ users.post("/signup", async(req , res) => {
         const {userId} = req.params;
     
         const userProducts = await getAllProductsForUser(userId)
-    
-        console.log(userProducts)
         res.json(userProducts);
     
     })
 
 
-
+    users.put("/:userId/products/:productsId", async (req ,res) => {
+        const { userId, productsId } = req.params
+        const updateCart = await editCartUser(userId , productsId, req.body)
+        res.status(200).json(updateCart)
+        console.log(updateCart)
+    })
 
     module.exports = users

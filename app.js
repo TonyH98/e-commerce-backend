@@ -21,6 +21,22 @@ app.get("/", (req , res) => {
     res.send("Welcome to the E-Commerce App")
 })
 
+const isAuthenticated = (req , res , next) => {
+    if(req.isAuthenticated()){
+        return next()
+    }
+    res.redirect('/users')
+}
+
+app.post('/logout', isAuthenticated, (req , res) => {
+    req.session.destroy((err) => {
+        if(err){
+            console.log(err)
+        }
+        res.redirect('/users')
+    })
+})
+
 app.post("/payment", ( req , res ) => {
     const { product , token  } = req.body;
     

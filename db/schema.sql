@@ -24,6 +24,9 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    email TEXT NOT NULL,
     password TEXT NOT NULL
 );
 
@@ -47,7 +50,8 @@ CREATE TABLE reviews (
  content TEXT,
  rating NUMERIC,
  CHECK (rating >= 0 AND rating <= 5),
- product_id INTEGER REFERENCES products (id)
+ product_id INTEGER REFERENCES products (id),
+ user_id INTEGER REFERENCES users (id)
  ON DELETE CASCADE
 );
 

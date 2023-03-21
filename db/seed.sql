@@ -31,9 +31,9 @@ FALSE),
 FALSE);
 
 
-INSERT INTO reviews (product_id, reviewer, title, content, rating )
-VALUES
-('1', 'Chris', 'Best Manga', 'The beginning of the one the greatest stories ever written', 5),
-('2', 'Sam', 'Pretty solid', 'The controller is great for Smash', 4),
-('4', 'Tony Hoang', 'Its alright', 'As a casual game its pretty good, but as a competitor there is a lot to be desire', 4),
-('3', 'Ben', 'Excellent Metroid game', 'As a long time fan its was great to see Samus once again in a brand new 2D game', 5)
+-- INSERT INTO reviews (product_id, reviewer, title, content, rating )
+-- VALUES
+-- ('1', 'Chris', 'Best Manga', 'The beginning of the one the greatest stories ever written', 5),
+-- ('2', 'Sam', 'Pretty solid', 'The controller is great for Smash', 4),
+-- ('4', 'Tony Hoang', 'Its alright', 'As a casual game its pretty good, but as a competitor there is a lot to be desire', 4),
+-- ('3', 'Ben', 'Excellent Metroid game', 'As a long time fan its was great to see Samus once again in a brand new 2D game', 5)

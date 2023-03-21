@@ -25,7 +25,7 @@ const getUser = async(id) => {
 }
 
 const newUser = async (user) => {
-    const {password , username} = user
+    const {password , username, firstName, lastName, email} = user
 
     
     try{
@@ -35,12 +35,10 @@ const newUser = async (user) => {
         const hashedPassword = await bcrypt.hash(password , salt)
 
         const newUser = await db.one(
-            'INSERT INTO users (username , password) VALUES($1 , $2) RETURNING *',
-            [username , hashedPassword]
+            'INSERT INTO users (username, password, firstName, lastName, email) VALUES($1 , $2, $3, $4, $5) RETURNING *',
+            [username , hashedPassword, firstName, lastName, email]
         );
-      
-            return newUser
-         
+            return newUser  
     }
     catch(err){
         return err
@@ -109,11 +107,11 @@ const getAllProductsForUser = async (id) => {
     }
     }
 
-const deleteProductFromUsers = async (userId , id) => {
+const deleteProductFromUsers = async (userId , productId) => {
     try{
         const deleteProduct = await db.one(
-            'DELETE FROM users_products WHERE users_id = $1 AND identification = $2 RETURNING *', 
-            [userId, id]
+            'DELETE FROM users_products WHERE users_id = $1 AND products_id = $2 RETURNING *', 
+            [userId, productId]
         )
         return deleteProduct
     }
@@ -122,4 +120,37 @@ const deleteProductFromUsers = async (userId , id) => {
     }
 }
 
-module.exports={getAllUsers , getUser , newUser, loginUser, addnewProductToUser, getAllProductsForUser, deleteProductFromUsers}
+const editCartUser = async (userId, productId , product) => {
+    try {
+        const updateCart = await db.one(
+             `
+            UPDATE users_products
+            SET product_name=$1, release_date=$2, 
+            image=$3, description=$4, price=$5, 
+            category=$6, manufacturer=$7, favorites=$8, 
+            cart_counter=$9
+            JOIN users ON users.id = users_products.users_id
+            JOIN products ON products.id = users_products.products_id
+             WHERE users_products.users_id=$10 AND users_products.products_id = $11 RETURNING *
+             `,
+            [ product.product_name, product.release_date, product.image, 
+            product.description, product.price, product.category, 
+            product.manufacturer, product.favorites, product.cart_counter, userId, productId ] 
+        )
+        return updateCart
+    }
+    catch(err){
+        return err
+    }
+}
+
+
+module.exports={
+  getAllUsers
+ ,getUser
+ ,newUser
+ ,loginUser
+ ,addnewProductToUser
+ ,getAllProductsForUser
+ ,deleteProductFromUsers
+ ,editCartUser}
