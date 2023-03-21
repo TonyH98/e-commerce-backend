@@ -24,12 +24,29 @@ const getUser = async(id) => {
     }
 }
 
+
+const checkExistingUser = async (username , email) => {
+    try{
+        const result = await db.one(
+            'SELECT * FROM users WHERE username =$1 OR email = $2',
+            [username , email]
+        )
+        return result.rowCount > 0
+    }
+    catch(err){
+        console.error(err)
+    }
+}
+
 const newUser = async (user) => {
     const {password , username, firstName, lastName, email} = user
 
     
     try{
-
+        const userExist = await checkExistingUser(username , email)
+        if(userExist){
+            throw new Error('Username or email already exists')
+        }
         const salt = await bcrypt.genSalt(saltRounds)
          
         const hashedPassword = await bcrypt.hash(password , salt)
@@ -38,7 +55,7 @@ const newUser = async (user) => {
             'INSERT INTO users (username, password, firstName, lastName, email) VALUES($1 , $2, $3, $4, $5) RETURNING *',
             [username , hashedPassword, firstName, lastName, email]
         );
-            return newUser  
+            return newUser
     }
     catch(err){
         return err

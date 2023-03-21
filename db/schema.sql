@@ -26,7 +26,7 @@ CREATE TABLE users(
     username TEXT UNIQUE NOT NULL,
     firstName TEXT NOT NULL,
     lastName TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
 );
 
