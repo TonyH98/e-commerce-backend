@@ -67,25 +67,24 @@ const loginUser = async (user) => {
 
     const {password , username} = user
 
-    try{
+    try {
         const oneUser = await db.one(
             "SELECT * FROM users WHERE username=$1",
             username
-        )
-            if(oneUser){
-
-                //return true or false it will no return user info
-                const foundUser = await bcrypt.compare(password, oneUser.password);
-
-                if(foundUser){
-                    const {username , id} = oneUser;
-                    return {username , id}
-                }
-
-            }
+        );
+        
+        // Check if the user's information exists in the database and if the provided password matches the one stored in the database.
+        if (oneUser && await bcrypt.compare(password, oneUser.password)) {
+            const {username , id} = oneUser;
+            return {username , id};
+        } else {
+            // If the provided credentials are incorrect, throw an error to prevent the user from logging in.
+            throw new Error("Invalid username or password.");
+        }
     }
-    catch(err){
-        return err
+    catch (err) {
+        // Catch any errors thrown and return an error message.
+        return err.message;
     }
 
 }
@@ -137,31 +136,47 @@ const deleteProductFromUsers = async (userId , productId) => {
     }
 }
 
-const editCartUser = async (userId, productId , product) => {
+const editCartUser = async (userId, productId, product) => {
     try {
-        const updateCart = await db.one(
-             `
-            UPDATE users_products
-            SET product_name=$1, release_date=$2, 
-            image=$3, description=$4, price=$5, 
-            category=$6, manufacturer=$7, favorites=$8, 
+      const updateCart = await db.one(
+        `
+          UPDATE products p
+          SET 
+            product_name=$1, 
+            release_date=$2, 
+            image=$3,
+            description=$4, 
+            price=$5, 
+            category=$6,
+            manufacturer=$7, 
+            favorites=$8,
             cart_counter=$9
-            JOIN users ON users.id = users_products.users_id
-            JOIN products ON products.id = users_products.products_id
-             WHERE users_products.users_id=$10 AND users_products.products_id = $11 RETURNING *
-             `,
-            [ product.product_name, product.release_date, product.image, 
-            product.description, product.price, product.category, 
-            product.manufacturer, product.favorites, product.cart_counter, userId, productId ] 
-        )
-        return updateCart
+          FROM users_products up
+          WHERE p.id = up.products_id 
+            AND up.users_id=$10
+            AND up.products_id = $11
+          RETURNING *
+        `,
+        [
+          product.product_name,
+          product.release_date,
+          product.image,
+          product.description,
+          product.price,
+          product.category,
+          product.manufacturer,
+          product.favorites,
+          product.cart_counter,
+          userId,
+          productId,
+        ]
+      );
+      return updateCart;
+    } catch (err) {
+      return err;
     }
-    catch(err){
-        return err
-    }
-}
-
-
+  };
+ 
 module.exports={
   getAllUsers
  ,getUser
