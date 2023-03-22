@@ -31,6 +31,8 @@ CREATE TABLE users(
     password TEXT NOT NULL
 );
 
+
+
 DROP TABLE IF EXISTS users_products;
 
 CREATE TABLE users_products(
