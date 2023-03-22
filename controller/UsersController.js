@@ -9,7 +9,7 @@ const { getAllUsers
     , deleteProductFromUsers
     , editCartUser} = require("../queries/users")
 
-const {checkPassword , checkEmail} = require("../middleware/Middleware")
+const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Middleware")
 
 const users = express.Router({mergeParams: true})
 
@@ -38,7 +38,7 @@ users.get("/:id", async (req , res) => {
 
 })
 
-users.post("/signup", checkPassword, checkEmail, async(req , res) => {
+users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , res) => {
 
     const user = await newUser(req.body);
     

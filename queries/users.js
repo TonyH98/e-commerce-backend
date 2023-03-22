@@ -39,7 +39,7 @@ const checkExistingUser = async (username , email) => {
 }
 
 const newUser = async (user) => {
-    const {password , username, firstName, lastName, email} = user
+    const {password , username, firstName, lastName, email,  phoneNumber} = user
 
     
     try{
@@ -52,8 +52,8 @@ const newUser = async (user) => {
         const hashedPassword = await bcrypt.hash(password , salt)
 
         const newUser = await db.one(
-            'INSERT INTO users (username, password, firstName, lastName, email) VALUES($1 , $2, $3, $4, $5) RETURNING *',
-            [username , hashedPassword, firstName, lastName, email]
+            'INSERT INTO users (username, password, firstName, lastName, email, phoneNumber) VALUES($1 , $2, $3, $4, $5, $6) RETURNING *',
+            [username , hashedPassword, firstName, lastName, email, phoneNumber]
         );
             return newUser
     }

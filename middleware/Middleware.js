@@ -22,5 +22,23 @@ function checkEmail(req , res , next){
 }
 
 
+function checkPhoneNumber(req, res, next) {
 
-module.exports = {checkPassword, checkEmail}
+  const phoneNumber = req.body.phoneNumber
+
+  const phoneNumberRegex = /^\(\d{3}\)\d{3}-\d{4}$/;
+
+
+  if (!phoneNumberRegex.test(phoneNumber)) {
+    return res.status(400).json({ error: 'Invalid phone number format' });
+  }
+
+
+  next();
+}
+
+// Export the middleware function for use in other modules
+
+
+
+module.exports = {checkPassword, checkEmail, checkPhoneNumber}
