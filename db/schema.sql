@@ -21,13 +21,14 @@ manufacturer TEXT NOT NULL
 
 
 DROP TABLE IF EXISTS users;
+
 CREATE TABLE users(
     id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
-    firstName TEXT NOT NULL,
-    lastName TEXT NOT NULL,
+    firstname TEXT NOT NULL,
+    lastname TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    phoneNumber TEXT NOT NULL,
+    phonenumber TEXT NOT NULL,
     password TEXT NOT NULL
 );
 

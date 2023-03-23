@@ -7,6 +7,7 @@ const { getAllUsers
     , addnewProductToUser
     , getAllProductsForUser
     , deleteProductFromUsers
+    ,editUser
     , editCartUser} = require("../queries/users")
 
 const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Middleware")
@@ -99,6 +100,14 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
     
     })
 
+    users.put("/:id", checkEmail, checkPhoneNumber, async(req , res) => {
+        const {id} = req.params
+
+        const editUsers = await editUser(id , req.body)
+
+        res.status(200).json(editUsers)
+        console.log(editUsers)
+    })
 
     users.put("/:userId/products/:productsId", async (req ,res) => {
         const { userId, productsId } = req.params

@@ -24,7 +24,7 @@ function checkEmail(req , res , next){
 
 function checkPhoneNumber(req, res, next) {
 
-  const phoneNumber = req.body.phoneNumber
+  const phoneNumber = req.body.phonenumber
 
   const phoneNumberRegex = /^\(\d{3}\)\d{3}-\d{4}$/;
 

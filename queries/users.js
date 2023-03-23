@@ -39,7 +39,7 @@ const checkExistingUser = async (username , email) => {
 }
 
 const newUser = async (user) => {
-    const {password , username, firstName, lastName, email,  phoneNumber} = user
+    const {password , username, firstname, lastname, email,  phonenumber} = user
 
     
     try{
@@ -52,8 +52,8 @@ const newUser = async (user) => {
         const hashedPassword = await bcrypt.hash(password , salt)
 
         const newUser = await db.one(
-            'INSERT INTO users (username, password, firstName, lastName, email, phoneNumber) VALUES($1 , $2, $3, $4, $5, $6) RETURNING *',
-            [username , hashedPassword, firstName, lastName, email, phoneNumber]
+            'INSERT INTO users (username, password, firstname, lastname, email, phonenumber) VALUES($1 , $2, $3, $4, $5, $6) RETURNING *',
+            [username , hashedPassword, firstname, lastname, email, phonenumber]
         );
             return newUser
     }
@@ -136,6 +136,20 @@ const deleteProductFromUsers = async (userId , productId) => {
     }
 }
 
+
+const editUser = async (id , user) => {
+    try{
+        const editUser = await db.one(
+            'UPDATE users SET username=$1, firstname=$2, lastname=$3, email=$4, phonenumber=$5 WHERE id=$6 RETURNING *',
+            [user.username, user.firstname, user.lastname, user.email, user.phonenumber, id]
+        )
+        return editUser
+    }
+    catch(error){
+        return error
+    }
+}
+
 const editCartUser = async (userId, productId, product) => {
     try {
       const updateCart = await db.one(
@@ -185,4 +199,5 @@ module.exports={
  ,addnewProductToUser
  ,getAllProductsForUser
  ,deleteProductFromUsers
+ , editUser
  ,editCartUser}
