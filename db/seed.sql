@@ -1,6 +1,6 @@
 \c commerce;  
 
-INSERT INTO products (product_name, release_date, image, description, price, category, manufacturer, cart_counter, favorites) VALUES
+INSERT INTO products (product_name, release_date, image, description, price, category, manufacturer, quantity, favorites) VALUES
 ('One Piece Vol 1', 'December 24, 1997', 'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg','The first volume of the highly acclaimed manga by Echiiro Oda', 9.99,'Anime/Manga','Shueisha', 0 , FALSE),
  ('Gamecube Controller',
   'October 17, 2018',

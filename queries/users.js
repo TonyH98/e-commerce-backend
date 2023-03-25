@@ -107,7 +107,7 @@ const getAllProductsForUser = async (id) => {
 
     try{
         const productsByUser = await db.any(
-            `SELECT identification, products_id, users_id, product_name, release_date, image, description, price, category, favorites, cart_counter, manufacturer
+            `SELECT identification, products_id, users_id, product_name, release_date, image, description, price, category, favorites, quantity, manufacturer
             FROM users_products
             JOIN users
             ON users.id = users_products.users_id
@@ -164,7 +164,7 @@ const editCartUser = async (userId, productId, product) => {
             category=$6,
             manufacturer=$7, 
             favorites=$8,
-            cart_counter=$9
+            quantity=$9
           FROM users_products up
           WHERE p.id = up.products_id 
             AND up.users_id=$10
@@ -180,7 +180,7 @@ const editCartUser = async (userId, productId, product) => {
           product.category,
           product.manufacturer,
           product.favorites,
-          product.cart_counter,
+          product.quantity,
           userId,
           productId,
         ]
@@ -190,6 +190,183 @@ const editCartUser = async (userId, productId, product) => {
       return err;
     }
   };
+
+
+  const addFavoriteToUser = async (userId, productsId) =>{
+    try{
+        const add = await db.none(
+            'INSERT INTO users_favorite (users_id, products_id) VALUES($1, $2)',
+            [userId , productsId]
+        );
+        return !add;
+    }
+    catch (err){
+        return err
+    }
+}
+
+
+const getAllFavoritesForUser = async (id) => {
+
+    try{
+        const favoritesByUser = await db.any(
+            `SELECT 
+            products_id, users_id, 
+            product_name, 
+            image, price,
+            favorites
+            FROM users_favorite
+            JOIN users
+            ON users.id = users_favorite.users_id
+            JOIN products
+            ON products.id = users_favorite.products_id
+            WHERE users_favorite.users_id = $1`,
+            id
+        );
+        return favoritesByUser
+    }
+    catch(error){
+        return error
+    }
+    }
+
+
+    const deleteFavoriteFromUsers = async (userId , productId) => {
+        try{
+            const deleteProduct = await db.one(
+                'DELETE FROM users_favorite WHERE users_id = $1 AND products_id = $2 RETURNING *', 
+                [userId, productId]
+            )
+            return deleteProduct
+        }
+        catch(error){
+            return error
+        }
+    }
+
+
+    const editFavoriteUser = async (userId, productId, product) => {
+        try {
+          const updateFavorite = await db.one(
+            `
+              UPDATE products p
+              SET 
+                product_name=$1,
+                image=$2,
+                price=$3,
+                favorites=$4
+              FROM users_favorite up
+              WHERE p.id = up.products_id 
+                AND up.users_id=$5
+                AND up.products_id = $6
+              RETURNING *
+            `,
+            [
+              product.product_name,
+              product.image,
+              product.price,
+              product.favorites,
+              userId,
+              productId,
+            ]
+          );
+          return updateFavorite;
+        } catch (err) {
+          return err;
+        }
+      };
+
+
+
+
+
+
+
+
+      const addSearchToUser = async (userId, productsId) =>{
+        try{
+            const add = await db.none(
+                'INSERT INTO users_search(users_id, products_id) VALUES($1, $2)',
+                [userId , productsId]
+            );
+            return !add;
+        }
+        catch (err){
+            return err
+        }
+    }
+    
+    
+    const getAllSearchForUser = async (id) => {
+    
+        try{
+            const favoritesByUser = await db.any(
+                `SELECT 
+                products_id, users_id, 
+                product_name, 
+                image, price,
+                favorites
+                FROM users_search
+                JOIN users
+                ON users.id = users_search.users_id
+                JOIN products
+                ON products.id = users_search.products_id
+                WHERE users_search.users_id = $1`,
+                id
+            );
+            return favoritesByUser
+        }
+        catch(error){
+            return error
+        }
+        }
+    
+    
+        const deleteSearchFromUsers = async (userId , productId) => {
+            try{
+                const deleteProduct = await db.one(
+                    'DELETE FROM users_search WHERE users_id = $1 AND products_id = $2 RETURNING *', 
+                    [userId, productId]
+                )
+                return deleteProduct
+            }
+            catch(error){
+                return error
+            }
+        }
+    
+    
+        const editSearchUser = async (userId, productId, product) => {
+            try {
+              const updateFavorite = await db.one(
+                `
+                  UPDATE products p
+                  SET 
+                    product_name=$1,
+                    image=$2,
+                    price=$3,
+                    favorites=$4
+                  FROM users_search up
+                  WHERE p.id = up.products_id 
+                    AND up.users_id=$5
+                    AND up.products_id = $6
+                  RETURNING *
+                `,
+                [
+                  product.product_name,
+                  product.image,
+                  product.price,
+                  product.favorites,
+                  userId,
+                  productId,
+                ]
+              );
+              return updateFavorite;
+            } catch (err) {
+              return err;
+            }
+          };
+    
  
 module.exports={
   getAllUsers
@@ -200,4 +377,12 @@ module.exports={
  ,getAllProductsForUser
  ,deleteProductFromUsers
  , editUser
- ,editCartUser}
+ ,editCartUser
+,addFavoriteToUser
+,getAllFavoritesForUser
+,editFavoriteUser
+,deleteFavoriteFromUsers
+,editSearchUser
+,deleteSearchFromUsers
+,addSearchToUser
+,getAllSearchForUser}

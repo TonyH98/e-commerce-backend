@@ -8,7 +8,15 @@ const { getAllUsers
     , getAllProductsForUser
     , deleteProductFromUsers
     ,editUser
-    , editCartUser} = require("../queries/users")
+    , editCartUser
+     , addFavoriteToUser
+    ,getAllFavoritesForUser
+    ,editFavoriteUser 
+    , deleteFavoriteFromUsers
+    , addSearchToUser
+    ,getAllSearchForUser
+    ,deleteSearchFromUsers
+    ,editSearchUser} = require("../queries/users")
 
 const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Middleware")
 
@@ -115,5 +123,102 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
         res.status(200).json(updateCart)
         console.log(updateCart)
     })
+
+
+
+    users.post("/:userId/favorites/:productsId", async (req , res) => {
+        const {userId , productsId} = req.params;
+    
+        const successfulAdd = await addFavoriteToUser(userId, productsId)
+       
+    
+        if(successfulAdd){
+            res.json({message: "Product Added"});
+        }
+        else{
+            res.json({error: "Product not added"})
+        }
+    
+    })
+
+
+    users.delete("/:userId/favorites/:productsId", async (req , res) => {
+        const { userId, productsId } = req.params
+
+        const deleteProduct = await deleteFavoriteFromUsers(userId , productsId)
+
+        if(deleteProduct.identification){
+            res.status(200).json(deleteProduct)
+        }
+    })
+
+
+    users.get("/:userId/favorites", async (req , res) => {
+        const {userId} = req.params;
+    
+        const userProducts = await getAllFavoritesForUser(userId)
+        res.json(userProducts);
+    })
+
+
+    users.put("/:userId/favorites/:productsId", async (req ,res) => {
+        const { userId, productsId } = req.params
+        const updateCart = await editFavoriteUser(userId , productsId, req.body)
+        res.status(200).json(updateCart)
+        console.log(updateCart)
+    })
+
+    
+
+
+    users.post("/:userId/search/:productsId", async (req , res) => {
+        const {userId , productsId} = req.params;
+    
+        const successfulAdd = await addSearchToUser(userId, productsId)
+       
+        console.log(successfulAdd)
+    
+        if(successfulAdd){
+            res.json({message: "Product Added"});
+        }
+        else{
+            res.json({error: "Product not added"})
+        }
+    
+    })
+
+    
+
+    users.delete("/:userId/search/:productsId", async (req , res) => {
+        const { userId, productsId } = req.params
+
+        const deleteProduct = await deleteSearchFromUsers(userId , productsId)
+
+        if(deleteProduct.identification){
+            res.status(200).json(deleteProduct)
+        }
+    })
+
+
+    users.get("/:userId/search", async (req , res) => {
+        const {userId} = req.params;
+    
+        const userProducts = await getAllSearchForUser(userId)
+        res.json(userProducts);
+    })
+
+
+    users.put("/:userId/search/:productsId", async (req ,res) => {
+        const { userId, productsId } = req.params
+        const updateCart = await editSearchUser(userId , productsId, req.body)
+        res.status(200).json(updateCart)
+        console.log(updateCart)
+    })
+
+
+
+
+
+
 
     module.exports = users

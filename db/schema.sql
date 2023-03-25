@@ -14,8 +14,8 @@ description TEXT NOT NULL,
 price decimal (6,2) NOT NULL,
 category VARCHAR(50) NOT NULL,
 favorites BOOLEAN DEFAULT false,
-cart_counter INTEGER,
-CHECK(cart_counter >= 0),
+quantity INTEGER,
+CHECK(quantity >= 0),
 manufacturer TEXT NOT NULL
 );
 
@@ -38,6 +38,23 @@ DROP TABLE IF EXISTS users_products;
 
 CREATE TABLE users_products(
     identification SERIAL PRIMARY KEY,
+    created TIMESTAMP WITH TIME ZONE,
+    products_id INTEGER,
+    users_id INTEGER
+);
+
+DROP TABLE IF EXISTS users_favorite;
+
+CREATE TABLE users_favorite(
+    created TIMESTAMP WITH TIME ZONE,
+    products_id INTEGER,
+    users_id INTEGER
+);
+
+
+DROP TABLE IF EXISTS users_search;
+
+CREATE TABLE users_search(
     created TIMESTAMP WITH TIME ZONE,
     products_id INTEGER,
     users_id INTEGER
