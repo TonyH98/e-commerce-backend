@@ -54,8 +54,8 @@ CREATE TABLE users_favorite(
 
 DROP TABLE IF EXISTS users_search;
 
-CREATE TABLE users_search(
-    created TIMESTAMP WITH TIME ZONE,
+CREATE TABLE users_search (
+    created TIMESTAMP WITH TIME ZONE DEFAULT TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'MM/DD/YYYY'), 'MM/DD/YYYY'),
     products_id INTEGER,
     users_id INTEGER
 );

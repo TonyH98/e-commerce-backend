@@ -11,20 +11,24 @@ product.use("/:productId/reviews", reviews)
 
 
 product.get("/", async (req , res) => {
-    const getAllProduct = await getAllProducts()
-    
-    const filters = req.query;
-    const filteredUsers = getAllProduct.filter(user => {
+  const getAllProduct = await getAllProducts()
+  
+  const filters = req.query;
+  const filteredProducts = getAllProduct.filter(product => {
       let isValid = true;
       for (key in filters) {
-       
-        isValid = isValid && user[key].toLowerCase() == filters[key].toLowerCase();
+          if (isNaN(filters[key])) {
+              isValid = isValid && (product[key].toLowerCase() == filters[key].toLowerCase());
+          } else {
+              isValid = isValid && (product[key] == parseInt(filters[key]));
+          }
       }
       return isValid;
-    });
-    res.send(filteredUsers);
- 
- })
+  });
+  res.send(filteredProducts);
+});
+
+
 
 
  product.get("/:id", async (req , res) => {

@@ -22,6 +22,9 @@ const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Mi
 
 const users = express.Router({mergeParams: true})
 
+
+
+
 users.get("/", async (req ,res) => {
     const allUsers = await getAllUsers();
 
@@ -194,18 +197,57 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
 
         const deleteProduct = await deleteSearchFromUsers(userId , productsId)
 
-        if(deleteProduct.identification){
+        console.log(deleteProduct)
+
+        if(deleteProduct.users_id){
             res.status(200).json(deleteProduct)
         }
     })
 
 
-    users.get("/:userId/search", async (req , res) => {
-        const {userId} = req.params;
-    
-        const userProducts = await getAllSearchForUser(userId)
-        res.json(userProducts);
-    })
+
+    // product.get("/", async (req , res) => {
+    //     const getAllProduct = await getAllProducts()
+        
+    //     const filters = req.query;
+    //     const filteredProducts = getAllProduct.filter(product => {
+    //         let isValid = true;
+    //         for (key in filters) {
+    //             if (isNaN(filters[key])) {
+    //                 isValid = isValid && (product[key].toLowerCase() == filters[key].toLowerCase());
+    //             } else {
+    //                 isValid = isValid && (product[key] == parseInt(filters[key]));
+    //             }
+    //         }
+    //         return isValid;
+    //     });
+    //     res.send(filteredProducts);
+    //   });
+
+
+
+    users.get("/:userId/search", async (req, res) => {
+        const { userId } = req.params;
+       
+        const filters = req.query
+
+        const userProducts = await getAllSearchForUser(userId);
+
+        const filterProducts = userProducts.filter(product => {
+            let isValid = true
+            for(key in filters){
+                if(isNaN(filters[key])){
+                    isValid = isValid && (product[key].toLowerCase() = filters[key].toLowerCase())
+                }
+                else{
+                    isValid = isValid && (product[key] == parseInt(filters[key]))
+                }
+            }
+            return isValid
+        })
+      
+        res.json(filterProducts);
+      });
 
 
     users.put("/:userId/search/:productsId", async (req ,res) => {

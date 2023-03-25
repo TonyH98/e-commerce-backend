@@ -283,18 +283,24 @@ const getAllFavoritesForUser = async (id) => {
 
 
 
-      const addSearchToUser = async (userId, productsId) =>{
-        try{
+      const addSearchToUser = async (userId, productsId) => {
+        try {
+            const currentDate = new Date().toLocaleDateString('en-US', { 
+                month: '2-digit', 
+                day: '2-digit', 
+                year: 'numeric' 
+            }).split('/').join('/');
+            
             const add = await db.none(
-                'INSERT INTO users_search(users_id, products_id) VALUES($1, $2)',
-                [userId , productsId]
+                'INSERT INTO users_search(created, users_id, products_id) VALUES($1, $2, $3)',
+                [currentDate, userId, productsId]
             );
+            
             return !add;
+        } catch (err) {
+            return err;
         }
-        catch (err){
-            return err
-        }
-    }
+    };
     
     
     const getAllSearchForUser = async (id) => {
@@ -305,7 +311,8 @@ const getAllFavoritesForUser = async (id) => {
                 products_id, users_id, 
                 product_name, 
                 image, price,
-                favorites
+                favorites,
+                created
                 FROM users_search
                 JOIN users
                 ON users.id = users_search.users_id
