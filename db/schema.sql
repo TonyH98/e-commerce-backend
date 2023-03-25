@@ -56,9 +56,23 @@ DROP TABLE IF EXISTS users_search;
 
 CREATE TABLE users_search (
     created TIMESTAMP WITH TIME ZONE DEFAULT TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'MM/DD/YYYY'), 'MM/DD/YYYY'),
+    selected BOOLEAN DEFAULT FALSE,
     products_id INTEGER,
     users_id INTEGER
 );
+
+CREATE OR REPLACE FUNCTION set_selected_default() RETURNS TRIGGER AS $$
+BEGIN
+  NEW.selected := FALSE;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_selected_default_trigger
+BEFORE INSERT ON users_search
+FOR EACH ROW
+EXECUTE FUNCTION set_selected_default();
+
 
 
 
