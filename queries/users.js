@@ -231,6 +231,38 @@ const getAllFavoritesForUser = async (id) => {
     }
 
 
+
+
+    const getFavoritebyIndex = async (userId, productId) => {
+        try {
+            const favorite = await db.oneOrNone(
+                `SELECT 
+                products_id, users_id, 
+                product_name, 
+                image, price,
+                favorites
+                FROM users_favorite
+                JOIN users
+                    ON users.id = users_favorite.users_id
+                JOIN products
+                    ON products.id = users_favorite.products_id
+                WHERE users_favorite.users_id = $1
+                AND users_favorite.products_id = $2`,
+                [userId, productId]
+            );
+    
+            if (!favorite) {
+                throw new Error(`No favorite found for user ID ${userId} and product ID ${productId}`);
+            }
+    
+            return favorite;
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+    
+
+
     const deleteFavoriteFromUsers = async (userId , productId) => {
         try{
             const deleteProduct = await db.one(
@@ -394,4 +426,5 @@ module.exports={
 ,editSearchUser
 ,deleteSearchFromUsers
 ,addSearchToUser
-,getAllSearchForUser}
+,getAllSearchForUser
+,getFavoritebyIndex}

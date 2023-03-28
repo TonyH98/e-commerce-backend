@@ -11,6 +11,7 @@ const { getAllUsers
     , editCartUser
      , addFavoriteToUser
     ,getAllFavoritesForUser
+    ,getFavoritebyIndex
     ,editFavoriteUser 
     , deleteFavoriteFromUsers
     , addSearchToUser
@@ -163,6 +164,17 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
         res.json(userProducts);
     })
 
+    users.get("/:userId/favorites/:productId", async (req, res) => {
+        const { userId, productId } = req.params;
+    
+        try {
+            const favorite = await getFavoritebyIndex(userId, productId);
+            res.json(favorite);
+        } catch (error) {
+            res.status(404).json({ error: error.message });
+        }
+    });
+    
 
     users.put("/:userId/favorites/:productsId", async (req ,res) => {
         const { userId, productsId } = req.params
