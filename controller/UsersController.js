@@ -216,28 +216,6 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
         }
     })
 
-
-
-    // product.get("/", async (req , res) => {
-    //     const getAllProduct = await getAllProducts()
-        
-    //     const filters = req.query;
-    //     const filteredProducts = getAllProduct.filter(product => {
-    //         let isValid = true;
-    //         for (key in filters) {
-    //             if (isNaN(filters[key])) {
-    //                 isValid = isValid && (product[key].toLowerCase() == filters[key].toLowerCase());
-    //             } else {
-    //                 isValid = isValid && (product[key] == parseInt(filters[key]));
-    //             }
-    //         }
-    //         return isValid;
-    //     });
-    //     res.send(filteredProducts);
-    //   });
-
-
-
     users.get("/:userId/search", async (req, res) => {
         const { userId } = req.params;
        

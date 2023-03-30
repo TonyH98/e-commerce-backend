@@ -47,7 +47,7 @@ DROP TABLE IF EXISTS users_favorite;
 
 CREATE TABLE users_favorite(
     created TIMESTAMP WITH TIME ZONE,
-    products_id INTEGER,
+    products_id INTEGER UNIQUE,
     users_id INTEGER
 );
 

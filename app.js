@@ -8,6 +8,10 @@ const user = require("./controller/UsersController")
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static('public'))
+
+const PORT = process.env.PORT
+
 
 app.use("/products", products)
 app.use("/users", user)
@@ -32,50 +36,34 @@ app.post('/logout', isAuthenticated, (req , res) => {
     })
 })
 
-app.post("/payment", async (req , res) => {
-    const { product , token , user } = req.body;
 
-    try {
-        const customer = await stripe.customers.create({
-            email: token.email,
-            source: token.id,
-            description: `Customer for ${user.email}`,
-            metadata: {
-                name: user.name,
-                phone: user.phone,
-                address: {
-                    line1: user.address.line1,
-                    line2: user.address.line2,
-                    city: user.address.city,
-                    state: user.address.state,
-                    postal_code: user.address.postal_code,
-                    country: user.address.country
-                }
-            }
-        });
-        const charge = await stripe.charges.create({
-            amount: product.price * 100,
-            currency: 'usd',
-            customer: customer.id,
-            receipt_email: token.email,
-            description: product.name,
-            shipping: {
-                name: token.card.name,
-                address: {
-                    line1: user.address.line1,
-                    line2: user.address.line2,
-                    city: user.address.city,
-                    state: user.address.state,
-                    postal_code: user.address.postal_code,
-                    country: user.address.country
-                }
-            }
-        });
-        res.json({ success: true });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-})
+app.post('/create-checkout-session', async (req, res) => {
+    const items = req.body.items; // assume that items is an array of objects containing product_id and quantity
+  
+    // fetch the price for each item from Stripe API
+    const lineItems = await Promise.all(
+      items.map(async (item) => {
+        const price = await stripe.prices.retrieve(item.product_id);
+        return {
+          price: price.id,
+          quantity: item.quantity,
+        };
+      })
+    );
+  
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: lineItems,
+      mode: 'payment',
+      success_url: `${PORT}?success=true`,
+      cancel_url: `${PORT}?canceled=true`,
+    });
+  
+    res.json({ id: session.id });
+  });
+  
+
+
 
 app.get("*", (req , res) => {
     res.status(404).send("Page not found")
