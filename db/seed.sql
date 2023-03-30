@@ -1,8 +1,9 @@
 \c commerce;  
 
-INSERT INTO products (product_name, release_date, image, description, price, category, manufacturer, quantity, favorites) VALUES
-('One Piece Vol 1', 'December 24, 1997', 'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg','The first volume of the highly acclaimed manga by Echiiro Oda', 9.99,'Anime/Manga','Shueisha', 0 , FALSE),
+INSERT INTO products (product_name, price_id, release_date, image, description, price, category, manufacturer, quantity, favorites) VALUES
+('One Piece Vol 1', 'price_1MpJgSHgd5U2y6vdur1CSbsO', 'December 24, 1997', 'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg','The first volume of the highly acclaimed manga by Echiiro Oda', 9.99,'Anime/Manga','Shueisha', 0 , FALSE),
  ('Gamecube Controller',
+ 'price_1MpJiGHgd5U2y6vdZfZokbK8',
   'October 17, 2018',
    'https://m.media-amazon.com/images/I/71Pxz0BUbbL.jpg',
    'This controller can be use to play Gamecube games, some Wii games, and most importantly the controller for competitive Smash players',
@@ -12,6 +13,7 @@ INSERT INTO products (product_name, release_date, image, description, price, cat
    0,
    FALSE),
 ('Metroid Dread',
+'price_1MpJj3Hgd5U2y6vdW6pEM9WE',
 'October 8, 2021',
 'https://m.media-amazon.com/images/I/816ZIy1Y0-L.jpg',
 'The highly anticapted 5th mainline game of the Metroid series, sees the return of Samus Aran as she continue her mission to eradicate the X parasies',
@@ -21,6 +23,7 @@ INSERT INTO products (product_name, release_date, image, description, price, cat
 0,
 FALSE),
 ('Smash Ultimate',
+'price_1MpJjiHgd5U2y6vdAkJlgDi7',
 'December 7, 2018',
 'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/5723/5723319_sd.jpg',
 'Platform fighting game featuring various games from famous Nintendo franchises and as well as guest characters from third party companies. The game brings back every single character from previous smash games and as well as new ones',

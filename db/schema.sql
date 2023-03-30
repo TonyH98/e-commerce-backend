@@ -7,6 +7,7 @@ CREATE DATABASE commerce;
 
 CREATE TABLE products (
 id SERIAL PRIMARY KEY,
+price_id TEXT,
 product_name VARCHAR(100) NOT NULL,
 release_date TEXT NOT NULL,
 image TEXT DEFAULT 'https://dummyimage.com/400x400/6e6c6e/e9e9f5.png&text=No+Image',

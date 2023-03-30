@@ -107,7 +107,7 @@ const getAllProductsForUser = async (id) => {
 
     try{
         const productsByUser = await db.any(
-            `SELECT identification, products_id, users_id, product_name, release_date, image, description, price, category, favorites, quantity, manufacturer
+            `SELECT identification, price_id, products_id, users_id, product_name, release_date, image, description, price, category, favorites, quantity, manufacturer
             FROM users_products
             JOIN users
             ON users.id = users_products.users_id
@@ -164,11 +164,12 @@ const editCartUser = async (userId, productId, product) => {
             category=$6,
             manufacturer=$7, 
             favorites=$8,
-            quantity=$9
+            quantity=$9,
+            price_id=$10
           FROM users_products up
           WHERE p.id = up.products_id 
-            AND up.users_id=$10
-            AND up.products_id = $11
+            AND up.users_id=$11
+            AND up.products_id = $12
           RETURNING *
         `,
         [
@@ -181,6 +182,7 @@ const editCartUser = async (userId, productId, product) => {
           product.manufacturer,
           product.favorites,
           product.quantity,
+          product.price_id,
           userId,
           productId,
         ]
@@ -214,7 +216,8 @@ const getAllFavoritesForUser = async (id) => {
             products_id, users_id, 
             product_name, 
             image, price,
-            favorites
+            favorites,
+            price_id
             FROM users_favorite
             JOIN users
             ON users.id = users_favorite.users_id
@@ -240,7 +243,8 @@ const getAllFavoritesForUser = async (id) => {
                 products_id, users_id, 
                 product_name, 
                 image, price,
-                favorites
+                favorites,
+                price_id
                 FROM users_favorite
                 JOIN users
                     ON users.id = users_favorite.users_id
@@ -286,11 +290,12 @@ const getAllFavoritesForUser = async (id) => {
                 product_name=$1,
                 image=$2,
                 price=$3,
-                favorites=$4
+                favorites=$4,
+                price_id=$5
               FROM users_favorite up
               WHERE p.id = up.products_id 
-                AND up.users_id=$5
-                AND up.products_id = $6
+                AND up.users_id=$6
+                AND up.products_id = $7
               RETURNING *
             `,
             [
@@ -298,6 +303,7 @@ const getAllFavoritesForUser = async (id) => {
               product.image,
               product.price,
               product.favorites,
+              product.price_id,
               userId,
               productId,
             ]
@@ -346,7 +352,8 @@ const getAllFavoritesForUser = async (id) => {
                 image, price,
                 favorites,
                 created,
-                selected
+                selected,
+                price_id
                 FROM users_search
                 JOIN users
                 ON users.id = users_search.users_id
@@ -386,11 +393,12 @@ const getAllFavoritesForUser = async (id) => {
                     product_name=$1,
                     image=$2,
                     price=$3,
-                    favorites=$4
+                    favorites=$4,
+                    price_id=$5
                   FROM users_search up
                   WHERE p.id = up.products_id 
-                    AND up.users_id=$5
-                    AND up.products_id = $6
+                    AND up.users_id=$6
+                    AND up.products_id = $7
                   RETURNING *
                 `,
                 [
@@ -398,6 +406,7 @@ const getAllFavoritesForUser = async (id) => {
                   product.image,
                   product.price,
                   product.favorites,
+                  product.price_id,
                   userId,
                   productId,
                 ]
