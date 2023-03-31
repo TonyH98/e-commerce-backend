@@ -24,17 +24,42 @@ const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Mi
 const users = express.Router({mergeParams: true})
 
 
+// product.get("/", async (req , res) => {
+//     const getAllProduct = await getAllProducts()
+    
+//     const filters = req.query;
+//     const filteredProducts = getAllProduct.filter(product => {
+//         let isValid = true;
+//         for (key in filters) {
+//             if (isNaN(filters[key])) {
+//                 isValid = isValid && (product[key].toLowerCase() == filters[key].toLowerCase());
+//             } else {
+//                 isValid = isValid && (product[key] == parseInt(filters[key]));
+//             }
+//         }
+//         return isValid;
+//     });
+//     res.send(filteredProducts);
+//   });
 
 
 users.get("/", async (req ,res) => {
     const allUsers = await getAllUsers();
 
-    if(allUsers[0]){
-        res.status(200).json(allUsers)
-    }
-    else{
-        res.status(500).json({error: "server error"})
-    }
+    const filter = req.query
+    const filterUser = allUsers.filter(user => {
+        let isValid = true
+        for(key in filter){
+            if(isNaN(filter[key])){
+                isValid = isValid && (user[key].toLowerCase() == filter[key].toLowerCase())
+            }
+            else{
+                isValid = isValid && (user[key] == parseInt(filter[key]))
+            }
+        }
+        return isValid
+    })
+    res.send(filterUser)
 
 })
 
@@ -69,10 +94,10 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
     
         if(user.username){
             const {id , username} = user
-            res.json({message: "Login Successful", id, username});
+            res.status(200).json({message: "Login Successful", id, username});
         }
         else{
-            res.json({message: "User Not Found"})
+            res.status(401).json({message: "User Not Found"})
         }
     
     })
