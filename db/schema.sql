@@ -46,12 +46,27 @@ CREATE TABLE users_products (
 DROP TABLE IF EXISTS users_favorite;
 
 CREATE TABLE users_favorite(
-    created TIMESTAMP WITH TIME ZONE,
+    created TIMESTAMP WITH TIME ZONE DEFAULT TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'MM/DD/YYYY'), 'MM/DD/YYYY'),
     favorites BOOLEAN DEFAULT TRUE,
     selected BOOLEAN DEFAULT FALSE,
-    products_id INTEGER UNIQUE,
+    products_id INTEGER,
     users_id INTEGER
 );
+
+
+CREATE OR REPLACE FUNCTION set_selected_default() RETURNS TRIGGER AS $$
+BEGIN
+  NEW.selected := FALSE;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER set_selected_default_trigger
+BEFORE INSERT ON users_favorite
+FOR EACH ROW
+EXECUTE FUNCTION set_selected_default();
+
+
 
 
 DROP TABLE IF EXISTS users_search;
