@@ -17,30 +17,15 @@ const { getAllUsers
     , addSearchToUser
     ,getAllSearchForUser
     ,deleteSearchFromUsers
-    ,editSearchUser} = require("../queries/users")
+    ,editSearchUser
+    ,getProductByIndex} = require("../queries/users")
 
 const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Middleware")
+const { is } = require("express/lib/request")
 
 const users = express.Router({mergeParams: true})
 
 
-// product.get("/", async (req , res) => {
-//     const getAllProduct = await getAllProducts()
-    
-//     const filters = req.query;
-//     const filteredProducts = getAllProduct.filter(product => {
-//         let isValid = true;
-//         for (key in filters) {
-//             if (isNaN(filters[key])) {
-//                 isValid = isValid && (product[key].toLowerCase() == filters[key].toLowerCase());
-//             } else {
-//                 isValid = isValid && (product[key] == parseInt(filters[key]));
-//             }
-//         }
-//         return isValid;
-//     });
-//     res.send(filteredProducts);
-//   });
 
 
 users.get("/", async (req ,res) => {
@@ -105,18 +90,16 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
 
     users.post("/:userId/products/:productsId", async (req , res) => {
         const {userId , productsId} = req.params;
-    
-        const successfulAdd = await addnewProductToUser(userId, productsId)
-       
-    
+        const { quantity } = req.body;
+          
+        const successfulAdd = await addnewProductToUser(userId, productsId, quantity)
+          
         if(successfulAdd){
-            res.json({message: "Product Added"});
+          res.json({message: "Product Added"});
+        } else {
+          res.json({error: "Product not added"})
         }
-        else{
-            res.json({error: "Product not added"})
-        }
-    
-    })
+      });
     
 
     users.delete("/:userId/products/:productsId", async (req , res) => {
@@ -146,12 +129,12 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
         console.log(editUsers)
     })
 
-    users.put("/:userId/products/:productsId", async (req ,res) => {
-        const { userId, productsId } = req.params
-        const updateCart = await editCartUser(userId , productsId, req.body)
-        res.status(200).json(updateCart)
-        console.log(updateCart)
-    })
+    users.put("/:userId/products/:productsId", async (req, res) => {
+        const { userId, productsId } = req.params;
+        const { quantity } = req.body;
+        const updateCart = await editCartUser(userId, productsId, { quantity });
+        res.status(200).json(updateCart);
+      });
 
 
 
@@ -182,11 +165,28 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
     })
 
 
+
     users.get("/:userId/favorites", async (req , res) => {
         const {userId} = req.params;
-    
+        
+        const filters = req.query
+
         const userProducts = await getAllFavoritesForUser(userId)
-        res.json(userProducts);
+        
+        const filterFav = userProducts.filter(product => {
+            let isValid = true
+            for(key in filters){
+                if(isNaN(filters[key])){
+                    isValid = isValid && (product[key].toLowerCase() = filters[key].toLowerCase())
+                }
+                else{
+                    isValid = isValid && (product[key] == parseInt(filters[key]))
+                }
+            }
+            return isValid
+        })
+
+        res.json(filterFav)
     })
 
     users.get("/:userId/favorites/:productId", async (req, res) => {
@@ -200,6 +200,20 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
         }
     });
     
+
+
+users.get("/:userId/products/:productId", async (req , res) => {
+    const {userId , productId} = req.params
+
+    try{
+        const product = await getProductByIndex(userId , productId)
+        res.json(product)
+    }
+    catch(error){
+        res.status(404).json({ error: error.message });
+    }
+})
+
 
     users.put("/:userId/favorites/:productsId", async (req ,res) => {
         const { userId, productsId } = req.params

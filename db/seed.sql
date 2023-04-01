@@ -1,7 +1,9 @@
 \c commerce;  
 
-INSERT INTO products (product_name, price_id, release_date, image, description, price, category, manufacturer, quantity, favorites) VALUES
-('One Piece Vol 1', 'price_1MpJgSHgd5U2y6vdur1CSbsO', 'December 24, 1997', 'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg','The first volume of the highly acclaimed manga by Echiiro Oda', 9.99,'Anime/Manga','Shueisha', 0 , FALSE),
+INSERT INTO products (product_name, price_id, release_date, image, description, price, category, manufacturer) VALUES
+('One Piece Vol 1', 'price_1MpJgSHgd5U2y6vdur1CSbsO', 'December 24, 1997', 
+'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg',
+'The first volume of the highly acclaimed manga by Echiiro Oda', 9.99,'Anime/Manga','Shueisha'),
  ('Gamecube Controller',
  'price_1MpJiGHgd5U2y6vdZfZokbK8',
   'October 17, 2018',
@@ -9,9 +11,7 @@ INSERT INTO products (product_name, price_id, release_date, image, description, 
    'This controller can be use to play Gamecube games, some Wii games, and most importantly the controller for competitive Smash players',
    69.99,
     'Video Games',
-   'Nintendo',
-   0,
-   FALSE),
+   'Nintendo'),
 ('Metroid Dread',
 'price_1MpJj3Hgd5U2y6vdW6pEM9WE',
 'October 8, 2021',
@@ -19,9 +19,7 @@ INSERT INTO products (product_name, price_id, release_date, image, description, 
 'The highly anticapted 5th mainline game of the Metroid series, sees the return of Samus Aran as she continue her mission to eradicate the X parasies',
 59.99,
 'Video Games',
-'Nintendo',
-0,
-FALSE),
+'Nintendo'),
 ('Smash Ultimate',
 'price_1MpJjiHgd5U2y6vdAkJlgDi7',
 'December 7, 2018',
@@ -29,9 +27,8 @@ FALSE),
 'Platform fighting game featuring various games from famous Nintendo franchises and as well as guest characters from third party companies. The game brings back every single character from previous smash games and as well as new ones',
 59.99,
 'Video Games',
-'Nintendo',
-0,
-FALSE);
+'Nintendo'
+);
 
 
 -- INSERT INTO reviews (product_id, reviewer, title, content, rating )

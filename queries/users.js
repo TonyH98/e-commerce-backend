@@ -88,40 +88,83 @@ const loginUser = async (user) => {
     }
 
 }
+                    const getProductByIndex = async (userId, productId) => {
+                        try{
+                            const product = await db.oneOrNone(
+                                `SELECT identification, price_id, products_id, users_id, 
+                                product_name, image,
+                                price, quantity
+                                FROM users_products
+                                JOIN users
+                                ON users.id = users_products.users_id
+                                JOIN products
+                                ON products.id = users_products.products_id
+                                WHERE users_products.users_id = $1
+                                AND users_products.products_id = $2`,
+                                [userId, productId]
+                                
+                                )
+                                return product
+                            }
+                            catch(error){
+                                return error
+                            }
+                        }
+                        
+                        const getAllProductsForUser = async (id) => {
+                            
+                            try{
+                                const productsByUser = await db.any(
+                                    `SELECT identification, price_id, products_id, users_id,
+                                    product_name, image, price,quantity
+                                    FROM users_products
+                                    JOIN users
+                                    ON users.id = users_products.users_id
+                                    JOIN products
+                                    ON products.id = users_products.products_id
+                                    WHERE users_products.users_id = $1`,
+                                    id
+                                    );
+                                    return productsByUser
+                                }
+                                catch(error){
+                                    return error
+                                }
+                            }
+                            
+                            const addnewProductToUser = async (userId, productId , quantity = 1) => {
+                                try {
+                                  const existingProduct = await db.oneOrNone(
+                                    `SELECT quantity FROM users_products WHERE users_id = $1 AND products_id = $2`,
+                                    [userId, productId]
+                                  );
+                              
+                                  if (existingProduct) {
+
+                                    const newQuantity = existingProduct.quantity + quantity;
+                                    await db.none(
+                                      `UPDATE users_products SET quantity = $1 WHERE users_id = $2 AND products_id = $3`,
+                                      [newQuantity, userId, productId]
+                                    );
+                                  } else {
+                                   
+                                    await db.none(
+                                      `INSERT INTO users_products (users_id, products_id, quantity) VALUES ($1, $2, $3)`,
+                                      [userId, productId, quantity]
+                                    );
+                                  }
+                                  return await getAllProductsForUser(userId);
+                                } catch (err) {
+                                  return err;
+                                }
+                              };
+                              
+                            
+                            
+                            
 
 
-const addnewProductToUser = async (userId, productsId) =>{
-    try{
-        const add = await db.none(
-            'INSERT INTO users_products (users_id, products_id) VALUES($1, $2)',
-            [userId , productsId]
-        );
-        return !add;
-    }
-    catch (err){
-        return err
-    }
-}
 
-const getAllProductsForUser = async (id) => {
-
-    try{
-        const productsByUser = await db.any(
-            `SELECT identification, price_id, products_id, users_id, product_name, release_date, image, description, price, category, favorites, quantity, manufacturer
-            FROM users_products
-            JOIN users
-            ON users.id = users_products.users_id
-            JOIN products
-            ON products.id = users_products.products_id
-            WHERE users_products.users_id = $1`,
-            id
-        );
-        return productsByUser
-    }
-    catch(error){
-        return error
-    }
-    }
 
 const deleteProductFromUsers = async (userId , productId) => {
     try{
@@ -151,47 +194,70 @@ const editUser = async (id , user) => {
 }
 
 const editCartUser = async (userId, productId, product) => {
-    try {
+  try {
+    // Check if the product already exists for the user
+    const cartItem = await db.oneOrNone(
+      `
+      SELECT up.*, p.price, p.image, p.product_name
+      FROM users_products up
+      JOIN products p ON up.products_id = p.id
+      JOIN users u ON up.users_id = u.id
+      WHERE up.users_id = $1
+        AND up.products_id = $2
+      `,
+      [userId, productId]
+    );
+
+    if (cartItem) {
+      // If the product exists, update its quantity
       const updateCart = await db.one(
         `
-          UPDATE products p
-          SET 
-            product_name=$1, 
-            release_date=$2, 
-            image=$3,
-            description=$4, 
-            price=$5, 
-            category=$6,
-            manufacturer=$7, 
-            favorites=$8,
-            quantity=$9,
-            price_id=$10
-          FROM users_products up
-          WHERE p.id = up.products_id 
-            AND up.users_id=$11
-            AND up.products_id = $12
-          RETURNING *
+          UPDATE users_products up
+          SET quantity = $1
+          FROM products p
+          WHERE up.users_id = $2
+            AND up.products_id = $3
+            AND p.id = $3
+          RETURNING up.*, p.price, p.image, p.product_name
         `,
         [
-          product.product_name,
-          product.release_date,
-          product.image,
-          product.description,
-          product.price,
-          product.category,
-          product.manufacturer,
-          product.favorites,
           product.quantity,
-          product.price_id,
           userId,
           productId,
         ]
       );
       return updateCart;
-    } catch (err) {
-      return err;
+    } else {
+      // If the product doesn't exist, insert a new row for it
+      const insertCart = await db.one(
+        `
+        INSERT INTO users_products (users_id, products_id, quantity)
+        VALUES ($1, $2, $3)
+        RETURNING up.*, p.price, p.image, p.product_name
+        FROM users_products up
+        JOIN products p ON up.products_id = p.id
+        WHERE up.users_id = $1
+          AND up.products_id = $2;
+        `,
+        [userId, productId, product.quantity]
+      );
+      return insertCart;
     }
-  };
+  } catch (err) {
+    console.error(err);
+    throw new Error('Failed to update user cart.');
+  }
+};
+
+
+
+
+
+
+
+
+
+
 
 
   const addFavoriteToUser = async (userId, productsId) =>{
@@ -350,7 +416,6 @@ const getAllFavoritesForUser = async (id) => {
                 products_id, users_id, 
                 product_name, 
                 image, price,
-                favorites,
                 created,
                 selected,
                 price_id
@@ -393,19 +458,17 @@ const getAllFavoritesForUser = async (id) => {
                     product_name=$1,
                     image=$2,
                     price=$3,
-                    favorites=$4,
-                    price_id=$5
+                    price_id=$4
                   FROM users_search up
                   WHERE p.id = up.products_id 
-                    AND up.users_id=$6
-                    AND up.products_id = $7
+                    AND up.users_id=$5
+                    AND up.products_id = $6
                   RETURNING *
                 `,
                 [
                   product.product_name,
                   product.image,
                   product.price,
-                  product.favorites,
                   product.price_id,
                   userId,
                   productId,
@@ -436,4 +499,5 @@ module.exports={
 ,deleteSearchFromUsers
 ,addSearchToUser
 ,getAllSearchForUser
-,getFavoritebyIndex}
+,getFavoritebyIndex
+,getProductByIndex}

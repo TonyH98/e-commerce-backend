@@ -3,7 +3,7 @@ CREATE DATABASE commerce;
 
 \c commerce; 
 
-
+DROP TABLE IF EXISTS products;
 
 CREATE TABLE products (
 id SERIAL PRIMARY KEY,
@@ -14,9 +14,6 @@ image TEXT DEFAULT 'https://dummyimage.com/400x400/6e6c6e/e9e9f5.png&text=No+Ima
 description TEXT NOT NULL,
 price decimal (6,2) NOT NULL,
 category VARCHAR(50) NOT NULL,
-favorites BOOLEAN DEFAULT false,
-quantity INTEGER,
-CHECK(quantity >= 0),
 manufacturer TEXT NOT NULL
 );
 
@@ -37,17 +34,21 @@ CREATE TABLE users(
 
 DROP TABLE IF EXISTS users_products;
 
-CREATE TABLE users_products(
+CREATE TABLE users_products (
     identification SERIAL PRIMARY KEY,
     created TIMESTAMP WITH TIME ZONE,
-    products_id INTEGER,
-    users_id INTEGER
+    users_id INTEGER,
+    products_id INTEGER ,
+    quantity INTEGER DEFAULT 0,
+    CHECK(quantity >= 0)
 );
 
 DROP TABLE IF EXISTS users_favorite;
 
 CREATE TABLE users_favorite(
     created TIMESTAMP WITH TIME ZONE,
+    favorites BOOLEAN DEFAULT TRUE,
+    selected BOOLEAN DEFAULT FALSE,
     products_id INTEGER UNIQUE,
     users_id INTEGER
 );
