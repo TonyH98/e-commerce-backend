@@ -21,7 +21,7 @@ const { getAllUsers
     ,getProductByIndex} = require("../queries/users")
 
 const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Middleware")
-const { is } = require("express/lib/request")
+
 
 const users = express.Router({mergeParams: true})
 

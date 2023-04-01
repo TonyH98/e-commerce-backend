@@ -67,10 +67,11 @@ app.post('/create-checkout-session', async (req, res) => {
     cancel_url: "http://localhost:3000/cancel"
   });
 
-  res.send(JSON.stringify({
+  res.status(200).send(JSON.stringify({
     url: session.url
   }))
-
+  
+  
 });
 
 
