@@ -111,7 +111,9 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
 
         const deleteProduct = await deleteProductFromUsers(userId , productsId)
 
-        if(deleteProduct.identification){
+        console.log(deleteProduct)
+
+        if(deleteProduct){
             res.status(200).json(deleteProduct)
         }
     })
@@ -365,7 +367,7 @@ users.post("/:userId/search/:productsId", async (req , res) => {
        
         console.log(successfulAdd)
     
-        if(successfulAdd){
+        if(successfulAdd ){
             res.json({message: "Product Added"});
         }
         else{
@@ -418,10 +420,12 @@ users.post("/:userId/search/:productsId", async (req , res) => {
     
         try{
             const product = await getPurchasebyIndex(userId , productId)
-            res.json(product)
+            if(product){
+                res.status(200).json(product)
+            }
         }
-        catch(error){
-            res.status(404).json({ error: error.message });
+        catch{
+            res.status(404).json({error: "No Purchases Found"})
         }
     })
     

@@ -474,112 +474,118 @@ const getAllFavoritesForUser = async (id) => {
           };
     
 
-
-          const addPurchaseToUser = async (userId, productsId, selected = false) => {
-            try {
-                const currentDate = new Date().toLocaleDateString('en-US', { 
-                    month: '2-digit', 
-                    day: '2-digit', 
-                    year: 'numeric' 
-                }).split('/').join('/');
-                
-                const add = await db.none(
-                    'INSERT INTO users_purchases(created, selected, users_id, products_id) VALUES($1, $2, $3, $4)',
-                    [currentDate, selected, userId, productsId]
-                );
-                
-                return !add;
-            } catch (err) {
-                return err;
-            }
-        };
-
-
-
-        const getAllPurchaseForUser = async (id) => {
-    
-          try{
-              const purchaseByUser = await db.any(
-                  `SELECT 
-                  products_id, users_id, 
-                  product_name, 
-                  image, price,
-                  created,
-                  selected
-                  FROM users_purchases
-                  JOIN users
-                  ON users.id = users_purchases.users_id
-                  JOIN products
-                  ON products.id = users_purchases.products_id
-                  WHERE users_purchases.users_id = $1`,
-                  id
-              );
-              return purchaseByUser
-          }
-          catch(error){
-              return error
-          }
-          }
-
-
-          const deletePurchasesFromUsers = async (userId , productId) => {
-            try{
-                const deleteProduct = await db.one(
-                    'DELETE FROM users_purchases WHERE users_id = $1 AND products_id = $2 RETURNING *', 
-                    [userId, productId]
-                )
-                return deleteProduct
-            }
-            catch(error){
-                return error
-            }
-        }
-
-
-
-
-        const getPurchasebyIndex = async (userId, productId) => {
-          try {
-              const purchase = await db.oneOrNone(
-                  `SELECT 
-                  products_id, users_id, 
-                  product_name, 
-                  image, price,
-                  created,
-                  selected
-                  FROM users_purchases
-                  JOIN users
+          
+          
+          
+          const getAllPurchaseForUser = async (id) => {
+              
+              try{
+                  const purchaseByUser = await db.any(
+                      `SELECT 
+                      products_id, users_id, 
+                      product_name, 
+                      image, price,
+                      created,
+                      selected
+                      FROM users_purchases
+                      JOIN users
                       ON users.id = users_purchases.users_id
-                  JOIN products
+                      JOIN products
                       ON products.id = users_purchases.products_id
-                  WHERE users_purchases.users_id = $1
-                  AND users_purchases.products_id = $2`,
-                  [userId, productId]
-              );
-      
-              if (!purchase) {
-                  throw new Error(`No Purchase found for user ID ${userId} and product ID ${productId}`);
-              }
-      
-              return purchase;
-          } catch (error) {
-              throw new Error(error.message);
-          }
-      }
-
-
-
-
-
-
- 
-module.exports={
-  getAllUsers
- ,getUser
- ,newUser
- ,loginUser
- ,addnewProductToUser
- ,getAllProductsForUser
+                      WHERE users_purchases.users_id = $1`,
+                      id
+                      );
+                      return purchaseByUser
+                    }
+                    catch(error){
+                        return error
+                    }
+                }
+                
+                
+                const deletePurchasesFromUsers = async (userId , productId) => {
+                    try{
+                        const deleteProduct = await db.one(
+                            'DELETE FROM users_purchases WHERE users_id = $1 AND products_id = $2 RETURNING *', 
+                            [userId, productId]
+                            )
+                            return deleteProduct
+                        }
+                        catch(error){
+                            return error
+                        }
+                    }
+                    
+                    
+                    
+                    
+                    const getPurchasebyIndex = async (userId, productId) => {
+                        try {
+                            const purchase = await db.oneOrNone(
+                                `SELECT 
+                                products_id, users_id, 
+                                product_name, 
+                                image, price,
+                                created,
+                                selected
+                                FROM users_purchases
+                                JOIN users
+                                ON users.id = users_purchases.users_id
+                                JOIN products
+                                ON products.id = users_purchases.products_id
+                                WHERE users_purchases.users_id = $1
+                                AND users_purchases.products_id = $2`,
+                                [userId, productId]
+                                );
+                                
+                                if (!purchase) {
+                                    throw new Error(`No Purchase found for user ID ${userId} and product ID ${productId}`);
+                                }
+                                
+                                return purchase;
+                            } catch (error) {
+                                throw new Error(error.message);
+                            }
+                        }
+                        
+                        
+                        
+                        
+                                  const addPurchaseToUser = async (userId, productsId, selected = false) => {
+                                    try {
+                                        
+                                        const existingPurchase = await getPurchasebyIndex(userId , productsId)
+                                        if(!existingPurchase){
+                                            const currentDate = new Date().toLocaleDateString('en-US', { 
+                                                month: '2-digit', 
+                                                day: '2-digit', 
+                                                year: 'numeric' 
+                                            }).split('/').join('/');
+                                            
+                                            const add = await db.one(
+                                                'INSERT INTO users_purchases(created, selected, users_id, products_id) VALUES($1, $2, $3, $4)',
+                                                [currentDate, selected, userId, productsId]
+                                            );
+                                            
+                                            return add;
+                                            
+                                        }
+                                     }
+                                    catch (err) {
+                                        return err;
+                                    }
+                                };
+                        
+                        
+                        
+                        
+                        module.exports={
+                            getAllUsers
+                            ,getUser
+                            ,newUser
+                            ,loginUser
+                            ,addnewProductToUser
+                            ,getAllProductsForUser
  ,deleteProductFromUsers
  , editUser
  ,editCartUser
