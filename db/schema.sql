@@ -95,8 +95,10 @@ DROP TABLE IF EXISTS users_purchases;
 CREATE TABLE users_purchases(
   created TIMESTAMP WITH TIME ZONE DEFAULT TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'MM/DD/YYYY'), 'MM/DD/YYYY'),
   selected BOOLEAN DEFAULT FALSE,
+  added BOOLEAN NOT NULL,
   products_id INTEGER,
-  users_id INTEGER
+  users_id INTEGER,
+  UNIQUE(users_id, products_id, added)
 );
 
 

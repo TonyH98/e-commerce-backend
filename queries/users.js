@@ -486,7 +486,8 @@ const getAllFavoritesForUser = async (id) => {
                       product_name, 
                       image, price,
                       created,
-                      selected
+                      selected,
+                      added
                       FROM users_purchases
                       JOIN users
                       ON users.id = users_purchases.users_id
@@ -527,7 +528,8 @@ const getAllFavoritesForUser = async (id) => {
                                 product_name, 
                                 image, price,
                                 created,
-                                selected
+                                selected,
+                                added
                                 FROM users_purchases
                                 JOIN users
                                 ON users.id = users_purchases.users_id
@@ -551,25 +553,22 @@ const getAllFavoritesForUser = async (id) => {
                         
                         
                         
-                                  const addPurchaseToUser = async (userId, productsId, selected = false) => {
+                                  const addPurchaseToUser = async (userId, productsId, added=true, selected = false) => {
                                     try {
-                                        
-                                        const existingPurchase = await getPurchasebyIndex(userId , productsId)
-                                        if(!existingPurchase){
                                             const currentDate = new Date().toLocaleDateString('en-US', { 
                                                 month: '2-digit', 
                                                 day: '2-digit', 
                                                 year: 'numeric' 
                                             }).split('/').join('/');
                                             
-                                            const add = await db.one(
-                                                'INSERT INTO users_purchases(created, selected, users_id, products_id) VALUES($1, $2, $3, $4)',
-                                                [currentDate, selected, userId, productsId]
+                                            const add = await db.none(
+                                                'INSERT INTO users_purchases(created, selected, users_id, products_id, added) VALUES($1, $2, $3, $4, $5)',
+                                                [currentDate, selected, userId, productsId, added]
                                             );
                                             
                                             return add;
                                             
-                                        }
+                                        
                                      }
                                     catch (err) {
                                         return err;
