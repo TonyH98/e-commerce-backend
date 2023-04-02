@@ -163,7 +163,7 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
 
         const deleteProduct = await deleteFavoriteFromUsers(userId , productsId)
 
-        if(deleteProduct.identification){
+        if(deleteProduct){
             res.status(200).json(deleteProduct)
         }
     })
@@ -199,9 +199,7 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
         try {
             const favorite = await getFavoritebyIndex(userId, productId);
             res.json(favorite);
-        } catch (error) {
-            res.status(404).json({ error: error.message });
-        }
+        } catch{}
     });
     
 

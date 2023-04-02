@@ -4,9 +4,7 @@ INSERT INTO products (product_name, release_date, image, description, price, cat
 ('One Piece Vol 1', 'December 24, 1997', 
 'http://prodimage.images-bn.com/pimages/9781569319017_p0_v1_s1200x630.jpg',
 'Join Monkey D. Luffy and his swashbuckling crew in their search for the ultimate treasure, One Piece!
-
 As a child, Monkey D. Luffy dreamed of becoming King of the Pirates. But his life changed when he accidentally gained the power to stretch like rubber…at the cost of never being able to swim again! Years, later, Luffy sets off in search of the “One Piece,” said to be the greatest treasure in the world...
-
 As a child, Monkey D. Luffy was inspired to become a pirate by listening to the tales of the buccaneer "Red-Haired" Shanks. But his life changed when Luffy accidentally ate the Gum-Gum Devil Fruit and gained the power to stretch like rubber...at the cost of never being able to swim again! Years later, still vowing to become the king of the pirates, Luffy sets out on his adventure...one guy alone in a rowboat, in search of the legendary "One Piece," said to be the greatest treasure in the world...', 9.99,'Anime/Manga','Shueisha'),
  ('Neo: The World Ends with You',
   'July 27, 2021',
@@ -29,7 +27,7 @@ Acquire new and familiar abilities as you traverse the many environments of this
 'Nintendo'),
 ('Smash Ultimate',
 'December 7, 2018',
-'https://pisces.bbystatic.com/image2/BestBuy_US/images/products/5723/5723319_sd.jpg',
+'https://m.media-amazon.com/images/I/81nrldTkHML._SL1500_.jpg',
 'New stages and fighters are joined by the combined rosters of every past Super Smash Bros. Game
 Challenge others anytime, anywhere, whether you`re on the couch or on the go
 Play any way you want—locally, online, in TV mode, Tabletop mode, Handheld mode, or even with GameCube Controllers
