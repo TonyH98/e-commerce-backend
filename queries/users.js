@@ -91,7 +91,7 @@ const loginUser = async (user) => {
                     const getProductByIndex = async (userId, productId) => {
                         try{
                             const product = await db.oneOrNone(
-                                `SELECT identification, price_id, products_id, users_id, 
+                                `SELECT identification, products_id, users_id, 
                                 product_name, image,
                                 price, quantity
                                 FROM users_products
@@ -115,7 +115,7 @@ const loginUser = async (user) => {
                             
                             try{
                                 const productsByUser = await db.any(
-                                    `SELECT identification, price_id, products_id, users_id,
+                                    `SELECT identification, products_id, users_id,
                                     product_name, image, price,quantity
                                     FROM users_products
                                     JOIN users
@@ -303,8 +303,7 @@ const getAllFavoritesForUser = async (id) => {
             product_name, 
             image, price,
             favorites,
-            selected,
-            price_id,
+            selected
             created
             FROM users_favorite
             JOIN users
@@ -331,8 +330,7 @@ const getAllFavoritesForUser = async (id) => {
                 products_id, users_id, 
                 product_name, 
                 image, price,
-                favorites,
-                price_id
+                favorites
                 FROM users_favorite
                 JOIN users
                     ON users.id = users_favorite.users_id
@@ -379,11 +377,10 @@ const getAllFavoritesForUser = async (id) => {
                 image=$2,
                 price=$3,
                 favorites=$4,
-                price_id=$5
               FROM users_favorite up
               WHERE p.id = up.products_id 
-                AND up.users_id=$6
-                AND up.products_id = $7
+                AND up.users_id=$5
+                AND up.products_id = $6
               RETURNING *
             `,
             [
@@ -391,7 +388,6 @@ const getAllFavoritesForUser = async (id) => {
               product.image,
               product.price,
               product.favorites,
-              product.price_id,
               userId,
               productId,
             ]
@@ -439,8 +435,7 @@ const getAllFavoritesForUser = async (id) => {
                 product_name, 
                 image, price,
                 created,
-                selected,
-                price_id
+                selected
                 FROM users_search
                 JOIN users
                 ON users.id = users_search.users_id
@@ -479,19 +474,17 @@ const getAllFavoritesForUser = async (id) => {
                   SET 
                     product_name=$1,
                     image=$2,
-                    price=$3,
-                    price_id=$4
+                    price=$3
                   FROM users_search up
                   WHERE p.id = up.products_id 
-                    AND up.users_id=$5
-                    AND up.products_id = $6
+                    AND up.users_id=$4
+                    AND up.products_id = $5
                   RETURNING *
                 `,
                 [
                   product.product_name,
                   product.image,
                   product.price,
-                  product.price_id,
                   userId,
                   productId,
                 ]
@@ -502,6 +495,105 @@ const getAllFavoritesForUser = async (id) => {
             }
           };
     
+
+
+          const addPurchaseToUser = async (userId, productsId, selected = false) => {
+            try {
+                const currentDate = new Date().toLocaleDateString('en-US', { 
+                    month: '2-digit', 
+                    day: '2-digit', 
+                    year: 'numeric' 
+                }).split('/').join('/');
+                
+                const add = await db.none(
+                    'INSERT INTO users_purchases(created, selected, users_id, products_id) VALUES($1, $2, $3, $4)',
+                    [currentDate, selected, userId, productsId]
+                );
+                
+                return !add;
+            } catch (err) {
+                return err;
+            }
+        };
+
+
+
+        const getAllPurchaseForUser = async (id) => {
+    
+          try{
+              const purchaseByUser = await db.any(
+                  `SELECT 
+                  products_id, users_id, 
+                  product_name, 
+                  image, price,
+                  created,
+                  selected
+                  FROM users_purchases
+                  JOIN users
+                  ON users.id = users_purchases.users_id
+                  JOIN products
+                  ON products.id = users_purchases.products_id
+                  WHERE users_purchases.users_id = $1`,
+                  id
+              );
+              return purchaseByUser
+          }
+          catch(error){
+              return error
+          }
+          }
+
+
+          const deletePurchasesFromUsers = async (userId , productId) => {
+            try{
+                const deleteProduct = await db.one(
+                    'DELETE FROM users_purchases WHERE users_id = $1 AND products_id = $2 RETURNING *', 
+                    [userId, productId]
+                )
+                return deleteProduct
+            }
+            catch(error){
+                return error
+            }
+        }
+
+
+
+
+        const getPurchasebyIndex = async (userId, productId) => {
+          try {
+              const purchase = await db.oneOrNone(
+                  `SELECT 
+                  products_id, users_id, 
+                  product_name, 
+                  image, price,
+                  created,
+                  selected
+                  FROM users_purchases
+                  JOIN users
+                      ON users.id = users_purchases.users_id
+                  JOIN products
+                      ON products.id = users_purchases.products_id
+                  WHERE users_purchases.users_id = $1
+                  AND users_purchases.products_id = $2`,
+                  [userId, productId]
+              );
+      
+              if (!purchase) {
+                  throw new Error(`No Purchase found for user ID ${userId} and product ID ${productId}`);
+              }
+      
+              return purchase;
+          } catch (error) {
+              throw new Error(error.message);
+          }
+      }
+
+
+
+
+
+
  
 module.exports={
   getAllUsers
@@ -522,4 +614,8 @@ module.exports={
 ,addSearchToUser
 ,getAllSearchForUser
 ,getFavoritebyIndex
-,getProductByIndex}
+,getProductByIndex
+,getAllPurchaseForUser
+,deletePurchasesFromUsers
+,addPurchaseToUser
+,getPurchasebyIndex}

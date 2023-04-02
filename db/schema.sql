@@ -7,7 +7,6 @@ DROP TABLE IF EXISTS products;
 
 CREATE TABLE products (
 id SERIAL PRIMARY KEY,
-price_id TEXT,
 product_name VARCHAR(100) NOT NULL,
 release_date TEXT NOT NULL,
 image TEXT DEFAULT 'https://dummyimage.com/400x400/6e6c6e/e9e9f5.png&text=No+Image',
@@ -91,14 +90,14 @@ FOR EACH ROW
 EXECUTE FUNCTION set_selected_default();
 
 
-DROP TABLE IF EXISTS users_purchses;
+DROP TABLE IF EXISTS users_purchases;
 
-CREATE TABLE users_purchses(
+CREATE TABLE users_purchases(
   created TIMESTAMP WITH TIME ZONE DEFAULT TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'MM/DD/YYYY'), 'MM/DD/YYYY'),
   selected BOOLEAN DEFAULT FALSE,
   products_id INTEGER,
   users_id INTEGER
-)
+);
 
 
 CREATE OR REPLACE FUNCTION set_selected_default() RETURNS TRIGGER AS $$
@@ -109,7 +108,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER set_selected_default_trigger
-BEFORE INSERT ON users_purchses
+BEFORE INSERT ON users_purchases
 FOR EACH ROW
 EXECUTE FUNCTION set_selected_default();
 

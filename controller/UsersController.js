@@ -18,7 +18,11 @@ const { getAllUsers
     ,getAllSearchForUser
     ,deleteSearchFromUsers
     ,editSearchUser
-    ,getProductByIndex} = require("../queries/users")
+    ,getProductByIndex
+    ,addPurchaseToUser
+    ,getAllPurchaseForUser
+    ,deletePurchasesFromUsers,
+    getPurchasebyIndex} = require("../queries/users")
 
 const {checkPassword , checkEmail, checkPhoneNumber} = require("../middleware/Middleware")
 
@@ -289,6 +293,140 @@ users.get("/:userId/products/:productId", async (req , res) => {
 
 
 
+users.post("/:userId/search/:productsId", async (req , res) => {
+        const {userId , productsId} = req.params;
+    
+        const successfulAdd = await addSearchToUser(userId, productsId)
+       
+        console.log(successfulAdd)
+    
+        if(successfulAdd){
+            res.json({message: "Product Added"});
+        }
+        else{
+            res.json({error: "Product not added"})
+        }
+    
+    })
+
+    
+
+    users.delete("/:userId/search/:productsId", async (req , res) => {
+        const { userId, productsId } = req.params
+
+        const deleteProduct = await deleteSearchFromUsers(userId , productsId)
+
+        console.log(deleteProduct)
+
+        if(deleteProduct.users_id){
+            res.status(200).json(deleteProduct)
+        }
+    })
+
+    users.get("/:userId/search", async (req, res) => {
+        const { userId } = req.params;
+       
+        const filters = req.query
+
+        const userProducts = await getAllSearchForUser(userId);
+
+        const filterProducts = userProducts.filter(product => {
+            let isValid = true
+            for(key in filters){
+                if(isNaN(filters[key])){
+                    isValid = isValid && (product[key].toLowerCase() = filters[key].toLowerCase())
+                }
+                else{
+                    isValid = isValid && (product[key] == parseInt(filters[key]))
+                }
+            }
+            return isValid
+        })
+      
+        res.json(filterProducts);
+      });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      users.post("/:userId/purchases/:productsId", async (req , res) => {
+        const {userId , productsId} = req.params;
+    
+        const successfulAdd = await addPurchaseToUser(userId, productsId)
+       
+        console.log(successfulAdd)
+    
+        if(successfulAdd){
+            res.json({message: "Product Added"});
+        }
+        else{
+            res.json({error: "Product not added"})
+        }
+    
+    })
+
+    
+
+    users.delete("/:userId/purchases/:productsId", async (req , res) => {
+        const { userId, productsId } = req.params
+
+        const deleteProduct = await deletePurchasesFromUsers(userId , productsId)
+
+        console.log(deleteProduct)
+
+        if(deleteProduct.users_id){
+            res.status(200).json(deleteProduct)
+        }
+    })
+
+    users.get("/:userId/purchases", async (req, res) => {
+        const { userId } = req.params;
+       
+        const filters = req.query
+
+        const userProducts = await getAllPurchaseForUser(userId);
+
+        const filterProducts = userProducts.filter(product => {
+            let isValid = true
+            for(key in filters){
+                if(isNaN(filters[key])){
+                    isValid = isValid && (product[key].toLowerCase() = filters[key].toLowerCase())
+                }
+                else{
+                    isValid = isValid && (product[key] == parseInt(filters[key]))
+                }
+            }
+            return isValid
+        })
+   
+            res.json(filterProducts);
+        
+      });
+
+
+      users.get("/:userId/purchases/:productId", async (req , res) => {
+        const {userId , productId} = req.params
+    
+        try{
+            const product = await getPurchasebyIndex(userId , productId)
+            res.json(product)
+        }
+        catch(error){
+            res.status(404).json({ error: error.message });
+        }
+    })
+    
 
 
 
