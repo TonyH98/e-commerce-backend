@@ -76,11 +76,10 @@ Denji’s a poor young man who’ll do anything for money, even hunting down dev
 'Winner of 41 National and International Awards including 10 Eisner Awards and 11 Harvey Awards!
 
 Meet the Bone cousins, Fone Bone, Phoney Bone and Smiley Bone, three misfits who are run out of Boneville and find themselves lost in a vast uncharted desert. They make their way into a deep, forested valley filled with wonderful and terrifying creatures. With the help of the mysterious Thorn, her tough-as-nails Gran’ma Ben and the Great Red Dragon, the boys do their best to survive in the middle of brewing trouble between the valley’s denizens. It will be the longest – but funniest – year of their lives!
-
 Originally serialized in black & white comic books and graphic novels, the award-winning novel was presented complete and unabridged for the first time in this impressive 1300 page tome preserving the original black & white artwork.',
 35.95,
 'Comics',
-'Cartoon Books')
+'Cartoon Books');
 
 
 
