@@ -561,7 +561,7 @@ const getAllFavoritesForUser = async (id) => {
                                                 year: 'numeric' 
                                             }).split('/').join('/');
                                             
-                                            const add = await db.none(
+                                            const add = await db.any(
                                                 'INSERT INTO users_purchases(created, selected, users_id, products_id, added) VALUES($1, $2, $3, $4, $5)',
                                                 [currentDate, selected, userId, productsId, added]
                                             );
