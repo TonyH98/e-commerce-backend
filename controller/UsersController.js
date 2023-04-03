@@ -365,7 +365,7 @@ users.post("/:userId/search/:productsId", async (req , res) => {
     
         const successfulAdd = await addPurchaseToUser(userId, productsId)
        
-        console.log(successfulAdd)
+        
     
         if(successfulAdd ){
             res.json({message: "Product Added"});
