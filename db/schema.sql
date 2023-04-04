@@ -114,8 +114,6 @@ BEFORE INSERT ON users_purchases
 FOR EACH ROW
 EXECUTE FUNCTION set_selected_default();
 
-
-
 DROP TABLE IF EXISTS reviews;
 
 CREATE TABLE reviews (

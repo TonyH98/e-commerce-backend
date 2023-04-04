@@ -281,7 +281,7 @@ const getAllFavoritesForUser = async (id) => {
             product_name, 
             image, price,
             favorites,
-            selected
+            selected,
             created
             FROM users_favorite
             JOIN users
