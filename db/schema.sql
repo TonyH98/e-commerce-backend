@@ -74,7 +74,9 @@ CREATE TABLE users_search (
     created TIMESTAMP WITH TIME ZONE DEFAULT TO_TIMESTAMP(TO_CHAR(CURRENT_TIMESTAMP, 'MM/DD/YYYY'), 'MM/DD/YYYY'),
     selected BOOLEAN DEFAULT FALSE,
     products_id INTEGER,
-    users_id INTEGER
+    users_id INTEGER,
+    added BOOLEAN NOT NULL,
+    UNIQUE(users_id, products_id, added)
 );
 
 CREATE OR REPLACE FUNCTION set_selected_default() RETURNS TRIGGER AS $$
