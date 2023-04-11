@@ -69,7 +69,7 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
 
     const user = await newUser(req.body);
     
-    console.log(user)
+
     
     
     const {id , username} = user
@@ -111,7 +111,7 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
 
         const deleteProduct = await deleteProductFromUsers(userId , productsId)
 
-        console.log(deleteProduct)
+  
 
         if(deleteProduct){
             res.status(200).json(deleteProduct)
@@ -132,7 +132,6 @@ users.post("/signup", checkPassword, checkEmail, checkPhoneNumber, async(req , r
         const editUsers = await editUser(id , req.body)
 
         res.status(200).json(editUsers)
-        console.log(editUsers)
     })
 
     users.put("/:userId/products/:productsId", async (req, res) => {
@@ -223,7 +222,7 @@ users.get("/:userId/products/:productId", async (req , res) => {
         const { userId, productsId } = req.params
         const updateCart = await editFavoriteUser(userId , productsId, req.body)
         res.status(200).json(updateCart)
-        console.log(updateCart)
+
     })
 
     
@@ -234,7 +233,7 @@ users.get("/:userId/products/:productId", async (req , res) => {
     
         const successfulAdd = await addSearchToUser(userId, productsId)
        
-        console.log(successfulAdd)
+    
     
         if(successfulAdd){
             res.json({message: "Product Added"});
@@ -252,7 +251,7 @@ users.get("/:userId/products/:productId", async (req , res) => {
 
         const deleteProduct = await deleteSearchFromUsers(userId , productsId)
 
-        console.log(deleteProduct)
+
 
         if(deleteProduct.users_id){
             res.status(200).json(deleteProduct)
@@ -287,7 +286,6 @@ users.get("/:userId/products/:productId", async (req , res) => {
         const { userId, productsId } = req.params
         const updateCart = await editSearchUser(userId , productsId, req.body)
         res.status(200).json(updateCart)
-        console.log(updateCart)
     })
 
 
@@ -297,8 +295,6 @@ users.post("/:userId/search/:productsId", async (req , res) => {
         const {userId , productsId} = req.params;
     
         const successfulAdd = await addSearchToUser(userId, productsId)
-       
-        console.log(successfulAdd)
     
         if(successfulAdd){
             res.json({message: "Product Added"});
@@ -316,7 +312,6 @@ users.post("/:userId/search/:productsId", async (req , res) => {
 
         const deleteProduct = await deleteSearchFromUsers(userId , productsId)
 
-        console.log(deleteProduct)
 
         if(deleteProduct.users_id){
             res.status(200).json(deleteProduct)
@@ -383,7 +378,7 @@ users.post("/:userId/search/:productsId", async (req , res) => {
 
         const deleteProduct = await deletePurchasesFromUsers(userId , productsId)
 
-        console.log(deleteProduct)
+   
 
         if(deleteProduct.users_id){
             res.status(200).json(deleteProduct)

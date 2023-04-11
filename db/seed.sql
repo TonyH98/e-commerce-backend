@@ -6,37 +6,6 @@ INSERT INTO products (product_name, release_date, image, description, price, cat
 'Join Monkey D. Luffy and his swashbuckling crew in their search for the ultimate treasure, One Piece!
 As a child, Monkey D. Luffy dreamed of becoming King of the Pirates. But his life changed when he accidentally gained the power to stretch like rubber…at the cost of never being able to swim again! Years, later, Luffy sets off in search of the “One Piece,” said to be the greatest treasure in the world...
 As a child, Monkey D. Luffy was inspired to become a pirate by listening to the tales of the buccaneer "Red-Haired" Shanks. But his life changed when Luffy accidentally ate the Gum-Gum Devil Fruit and gained the power to stretch like rubber...at the cost of never being able to swim again! Years later, still vowing to become the king of the pirates, Luffy sets out on his adventure...one guy alone in a rowboat, in search of the legendary "One Piece," said to be the greatest treasure in the world...', 9.99,'Anime/Manga','Shueisha'),
- ('Neo: The World Ends with You',
-  'July 27, 2021',
-  'https://m.media-amazon.com/images/I/81WAhppQOBS._SY445_.jpg',
-  'Delve into a vividly illustrated Shibuya, animated with style, music and monsters
-Collect and wield hundreds of Psych abilities to battle surreal threats
-Investigate the world around you and beat the the Reapers Game to Survive',
-27.94,
-'Video Games',
-'Square Enix'),
-('Metroid Dread',
-'October 8, 2021',
-'https://m.media-amazon.com/images/I/816ZIy1Y0-L.jpg',
-'Join bounty hunter Samus Aran as she escapes a deadly alien world plagued by a mechanical menace in Metroid Dread for Nintendo Switch.
-Samus’ story continues after the events of Metroid Fusion when she descends upon planet ZDR to investigate a mysterious transmission sent to the Galactic Federation. The remote planet has become overrun by vicious alien lifeforms and chilling mechanical menaces. Samus is more agile and capable than ever, but can she overcome the inhuman threat stalking the depths of ZDR?
-Once DNA-extracting research machines, the imposing E.M.M.I. are now hunting Samus down. Tensions are high as you evade these E.M.M.I. to avoid a cruel death while finding a way to take them down. Find out what turned these robotic wonders into the scourge of ZDR and escape with your life.
-Acquire new and familiar abilities as you traverse the many environments of this dangerous world. Parkour over obstacles, slide through tight spaces, counter enemies, and battle your way through the planet. Return to areas and use your new abilities to find upgrades, alternate paths, and a way forward. Explore the sprawling map, evade and destroy E.M.M.I. robots, and overcome the dread plaguing ZDR.',
-59.99,
-'Video Games',
-'Nintendo'),
-('Smash Ultimate',
-'December 7, 2018',
-'https://m.media-amazon.com/images/I/81nrldTkHML._SL1500_.jpg',
-'New stages and fighters are joined by the combined rosters of every past Super Smash Bros. Game
-Challenge others anytime, anywhere, whether you`re on the couch or on the go
-Play any way you want—locally, online, in TV mode, Tabletop mode, Handheld mode, or even with GameCube Controllers
-Fight faster and smarter with new and returning techniques, like the perfect shield and directional air dodge
-Face off in 2-4 player battles, or play against the computer',
-59.99,
-'Video Games',
-'Nintendo'
-),
 ('Berserk Vol 1',
 'November 4, 2003', 
 'https://m.media-amazon.com/images/I/51xVYOT4mVL._SX352_BO1,204,203,200_.jpg',
@@ -47,6 +16,43 @@ their sacrifice. But Guts won`t take his fate lying down; he`ll cut a crimson sw
 'Anime/Manga',
 'Dark Horse Manga
 '),
+(
+  'Metroid Prime',
+  'November 18, 2002',
+  'https://m.media-amazon.com/images/I/51NEV04vwQL.jpg',
+  'On a distant planet known as Tallon IV, where a deserted space station leads to a nightmare discovery -- the Metroids have returned, mutated and more powerful than before!
+You`ll play Metroid-hunter Samus, as you fight through tunnels against the deadliest creatures in the galaxy
+Use bombs, missiles, lasers, and your ability to morph into a ball strategically, as you navigate a desolate planet filled with deadly corridors
+You`ll also be able to wear new suits that give Samus all-new powers
+Flawless camera angles, fantastic 3D graphics, and massively detailed game worlds all combine with gorgeous cutscenes that advance the story',
+59.99,
+'Video Games',
+'Nintendo'
+),
+('Super Mario Galaxy',
+  'November 1, 2007',
+  'https://m.media-amazon.com/images/I/51tPCaGMWCL.jpg',
+  'For 1 to 2 players
+Perform mind-bending, low-gravity jumps across wild alien terrain
+Players can run, jump, and battle enemies as they explore the many planets
+Join Mario as he ushers in a new era of video games, defying gravity across all the planets in the galaxy
+Press buttons, swing the Wii Remote and Nunchuk controllers, and use the Wii Remote to point at and drag things on-screen
+Join Mario as he ushers in a new era of video games, defying gravity across all the planets in the galaxy
+Players can run, jump, and battle enemies as they explore the many planets',
+59.99,
+'Video Games',
+'Nintendo'
+  ),
+('The Legend of Zelda: Twilight Princess',
+  'November 19, 2006',
+  'https://m.media-amazon.com/images/I/51-sTAVzeFL._SY445_.jpg',
+  'Combines the amazing new interface features of the Wii with the Zelda franchise
+Amazing new horseback combat system
+Attacks, moves, and even fishing, are controlled with the Wii Remote
+Link transforms into different creatures as part of his quest',
+59.99,
+'Video Games',
+'Nintendo'),
 ('Chainsaw Man, Vol. 1','October 6, 2020', 'https://m.media-amazon.com/images/I/51m9ctmcRnL._SX331_BO1,204,203,200_.jpg',
 'Denji was a small-time devil hunter just trying to survive in a harsh world. After being killed on a job, he is revived by his pet devil Pochita and becomes something new and dangerous—Chainsaw Man!
 Denji’s a poor young man who’ll do anything for money, even hunting down devils with his pet devil Pochita. He’s a simple man with simple dreams, drowning under a mountain of debt. But his sad life gets turned upside down one day when he’s betrayed by someone he trusts. Now with the power of a devil inside him, Denji’s become a whole new man—Chainsaw Man!',
@@ -68,7 +74,7 @@ Denji’s a poor young man who’ll do anything for money, even hunting down dev
 9.99,
 'Comics',
 'Image Comics'),
-('Bone: The Complete Cartoon Epic in One Volume',
+('Bone: The Complete Volume',
 'September 1, 2004',
 'https://m.media-amazon.com/images/I/51ZCU7OIYWL._SX357_BO1,204,203,200_.jpg',
 'Winner of 41 National and International Awards including 10 Eisner Awards and 11 Harvey Awards!
@@ -81,3 +87,35 @@ Originally serialized in black & white comic books and graphic novels, the award
 
 
 
+
+-- ('Smash Ultimate',
+-- 'December 7, 2018',
+-- 'https://m.media-amazon.com/images/I/81nrldTkHML._SL1500_.jpg',
+-- 'New stages and fighters are joined by the combined rosters of every past Super Smash Bros. Game
+-- Challenge others anytime, anywhere, whether you`re on the couch or on the go
+-- Play any way you want—locally, online, in TV mode, Tabletop mode, Handheld mode, or even with GameCube Controllers
+-- Fight faster and smarter with new and returning techniques, like the perfect shield and directional air dodge
+-- Face off in 2-4 player battles, or play against the computer',
+-- 59.99,
+-- 'Video Games',
+-- 'Nintendo'
+-- ),
+-- ('Metroid Dread',
+-- 'October 8, 2021',
+-- 'https://m.media-amazon.com/images/I/816ZIy1Y0-L.jpg',
+-- 'Join bounty hunter Samus Aran as she escapes a deadly alien world plagued by a mechanical menace in Metroid Dread for Nintendo Switch.
+-- Samus’ story continues after the events of Metroid Fusion when she descends upon planet ZDR to investigate a mysterious transmission sent to the Galactic Federation. The remote planet has become overrun by vicious alien lifeforms and chilling mechanical menaces. Samus is more agile and capable than ever, but can she overcome the inhuman threat stalking the depths of ZDR?
+-- Once DNA-extracting research machines, the imposing E.M.M.I. are now hunting Samus down. Tensions are high as you evade these E.M.M.I. to avoid a cruel death while finding a way to take them down. Find out what turned these robotic wonders into the scourge of ZDR and escape with your life.
+-- Acquire new and familiar abilities as you traverse the many environments of this dangerous world. Parkour over obstacles, slide through tight spaces, counter enemies, and battle your way through the planet. Return to areas and use your new abilities to find upgrades, alternate paths, and a way forward. Explore the sprawling map, evade and destroy E.M.M.I. robots, and overcome the dread plaguing ZDR.',
+-- 59.99,
+-- 'Video Games',
+-- 'Nintendo'),
+--  ('Neo: The World Ends with You',
+--   'July 27, 2021',
+--   'https://m.media-amazon.com/images/I/81WAhppQOBS._SY445_.jpg',
+--   'Delve into a vividly illustrated Shibuya, animated with style, music and monsters
+-- Collect and wield hundreds of Psych abilities to battle surreal threats
+-- Investigate the world around you and beat the the Reapers Game to Survive',
+-- 27.94,
+-- 'Video Games',
+-- 'Square Enix'),

@@ -587,20 +587,20 @@ const getAllFavoritesForUser = async (id) => {
                             ,loginUser
                             ,addnewProductToUser
                             ,getAllProductsForUser
- ,deleteProductFromUsers
- , editUser
- ,editCartUser
-,addFavoriteToUser
-,getAllFavoritesForUser
-,editFavoriteUser
-,deleteFavoriteFromUsers
-,editSearchUser
-,deleteSearchFromUsers
-,addSearchToUser
-,getAllSearchForUser
-,getFavoritebyIndex
-,getProductByIndex
-,getAllPurchaseForUser
-,deletePurchasesFromUsers
-,addPurchaseToUser
-,getPurchasebyIndex}
+                            ,deleteProductFromUsers
+                             , editUser
+                                ,editCartUser
+                            ,addFavoriteToUser
+                            ,getAllFavoritesForUser
+                            ,editFavoriteUser
+                            ,deleteFavoriteFromUsers
+                            ,editSearchUser
+                            ,deleteSearchFromUsers
+                            ,addSearchToUser
+                            ,getAllSearchForUser
+                            ,getFavoritebyIndex
+                            ,getProductByIndex
+                            ,getAllPurchaseForUser
+                            ,deletePurchasesFromUsers
+                            ,addPurchaseToUser
+                            ,getPurchasebyIndex}
