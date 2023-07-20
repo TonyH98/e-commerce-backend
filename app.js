@@ -1,16 +1,20 @@
 const express = require('express')
-const stripe = require("stripe")("sk_test_51McALmHgd5U2y6vdLJiKvnZq8wWKDvkf3LocRNeV3zVlUwUT0qu9DjPcMtVBIPymxhfvNTQTdbWtdl8ChFKC4oD500pYsmEHeG")
+require("dotenv").config()
+
+const stripe = require("stripe")(process.env.REACT_API_STRIPE_KEY)
 const cors = require('cors')
 const app = express()
 
 const products = require("./controller/ProductController")
 const user = require("./controller/UsersController")
 
+
+
 app.use(cors())
 app.use(express.json())
 app.use(express.static('public'))
 
-const PORT = process.env.PORT
+
 
 
 app.use("/products", products)
@@ -40,9 +44,9 @@ app.post('/logout', isAuthenticated, (req , res) => {
 app.post('/create-checkout-session', async (req, res) => {
   const { items } = req.body;
   console.log("Request body:", req.body);
-  // Map the items array to create an array of line items for the Stripe checkout session
+
   const lineItems = items.map((item) => {
-    // Check if item.price is a valid number
+
     const unitAmount = Math.round(parseFloat(item.price) * 100);
     
     return {
@@ -63,7 +67,7 @@ app.post('/create-checkout-session', async (req, res) => {
     payment_method_types: ['card'],
     line_items: lineItems,
     mode: 'payment',
-    success_url: "https://digital-commerce-site.netlify.app/success",
+    success_url: "http://localhost:3000/success",
     cancel_url: "https://digital-commerce-site.netlify.app/"
   });
 

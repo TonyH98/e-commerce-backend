@@ -17,6 +17,9 @@ manufacturer TEXT NOT NULL
 );
 
 
+
+
+
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users(
@@ -31,13 +34,24 @@ CREATE TABLE users(
 
 
 
+DROP TABLE IF EXISTS users_created_products;
+CREATE TABLE users_created_products(
+id SERIAL PRIMARY KEY,
+product_id INTEGER REFERENCES products(id),
+seller_id INTEGER REFERENCES users(id), 
+price decimal (6,2) NOT NULL,
+condition TEXT,
+ship_location TEXT, 
+description TEXT
+);
+
+
 DROP TABLE IF EXISTS users_products;
 
 CREATE TABLE users_products (
-    identification SERIAL PRIMARY KEY,
-    created TIMESTAMP WITH TIME ZONE,
     users_id INTEGER,
     products_id INTEGER ,
+    created_id INTEGER,
     quantity INTEGER DEFAULT 0,
     CHECK(quantity >= 0)
 );
@@ -78,6 +92,7 @@ CREATE TABLE users_search (
     added BOOLEAN NOT NULL,
     UNIQUE(users_id, products_id, added)
 );
+
 
 CREATE OR REPLACE FUNCTION set_selected_default() RETURNS TRIGGER AS $$
 BEGIN

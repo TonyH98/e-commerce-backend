@@ -37,8 +37,6 @@ function checkPhoneNumber(req, res, next) {
   next();
 }
 
-// Export the middleware function for use in other modules
-
 
 
 module.exports = {checkPassword, checkEmail, checkPhoneNumber}

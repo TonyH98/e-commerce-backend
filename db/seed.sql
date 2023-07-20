@@ -83,39 +83,90 @@ Meet the Bone cousins, Fone Bone, Phoney Bone and Smiley Bone, three misfits who
 Originally serialized in black & white comic books and graphic novels, the award-winning novel was presented complete and unabridged for the first time in this impressive 1300 page tome preserving the original black & white artwork.',
 35.95,
 'Comics',
-'Cartoon Books');
+'Cartoon Books'),
 
+ ('Neo: The World Ends with You',
+  'July 27, 2021',
+  'https://m.media-amazon.com/images/I/81WAhppQOBS._SY445_.jpg',
+  'Delve into a vividly illustrated Shibuya, animated with style, music and monsters
+Collect and wield hundreds of Psych abilities to battle surreal threats
+Investigate the world around you and beat the the Reapers Game to Survive',
+27.94,
+'Video Games',
+'Square Enix'),
+('Metal Gear Rising: Revengence',
+'February 19, 2013',
+'https://m.media-amazon.com/images/I/61j-LAZFgeL._SX300_SY300_QL70_FMwebp_.jpg',
+'Risings stealth elements will emphasize Raidens considerable speed and agility through what Matsuyama describes as "hunting stealth."
+Gameplay will focus on two key elements: swordfighting, and a style of stealth that is more fast-paced and action-oriented.
+"Cutting" entails sophisticated swordplay that lets players engage in third person melee combat, as well as precisely slash enemies and objects "at will" along a geometrical plane using a "free slicing" mode.',
+16.00,
+'Video Games',
+'Konami'
+),
+('The Great Ace Attorney Chronicles',
+'July 27, 2021',
+'https://m.media-amazon.com/images/I/81Mnd4m+v2L._SY445_.jpg',
+'Two games in One - For the first time, players in north America and Europe will experience 10 episodes from the great Ace attorney: adventures and the great Ace attorney 2: resolve, previously only available in Japan.
+An all-new cast - the collection follows ryunosuke naruhodo, an ancestor of Phoenix wright, alongside a colorful new cast of characters including the quirky Ace detective, her Lock Sholmes.
+New gameplay mechanics - the great Ace attorney Chronicles debuts two new gameplay experiences to Raise the stakes in and out of the courtroom.
+Bonus content included - in addition to the two games, The collection also includes exciting bonus content that was previously released as DLC content or through special events in Japan.
+Art gallery and auditorium - experience the beautiful artwork, music and voice recordings of the great Ace attorney, presented in full-fledged galleries for players to enjoy.',
+29.99,
+'Video Games',
+'Capcom'),
+('Land of the Lustrous 1',
+'June 27, 2017',
+'https://m.media-amazon.com/images/I/61vJfkJVLWL._SX349_BO1,204,203,200_.jpg',
+'The elegant, enthralling action manga that became the hit anime! Find out why readers have flocked to this "gorgeous, absorbing, surprisingly emotionally resonant" masterpiece!
 
+SEARCHING FOR PURPOSE  
 
+In a world inhabited by crystalline lifeforms called The Lustrous, every unique gem must fight for their way of life against the threat of lunarians who would turn them into decorations. Phosphophyllite, the most fragile and brittle of gems, longs to join the battle. When Phos is instead assigned to complete a natural history of their world, it sounds like a dull and pointless task. But this new job brings Phos into contact with Cinnabar, a gem forced to live in isolation. Can Phoss seemingly mundane assignment lead both Phos and Cinnabar to the fulfillment they desire?',
+12.99,
+'Anime/Manga',
+'Kodansha Comics
+'),
+('Golden Kamuy, Vol. 1',
+'June 20, 2017',
+'https://m.media-amazon.com/images/I/51JXeBls-zL._SX347_BO1,204,203,200_.jpg',
+'A tale of high adventure and survival!
 
--- ('Smash Ultimate',
--- 'December 7, 2018',
--- 'https://m.media-amazon.com/images/I/81nrldTkHML._SL1500_.jpg',
--- 'New stages and fighters are joined by the combined rosters of every past Super Smash Bros. Game
--- Challenge others anytime, anywhere, whether you`re on the couch or on the go
--- Play any way you want—locally, online, in TV mode, Tabletop mode, Handheld mode, or even with GameCube Controllers
--- Fight faster and smarter with new and returning techniques, like the perfect shield and directional air dodge
--- Face off in 2-4 player battles, or play against the computer',
--- 59.99,
--- 'Video Games',
--- 'Nintendo'
--- ),
--- ('Metroid Dread',
--- 'October 8, 2021',
--- 'https://m.media-amazon.com/images/I/816ZIy1Y0-L.jpg',
--- 'Join bounty hunter Samus Aran as she escapes a deadly alien world plagued by a mechanical menace in Metroid Dread for Nintendo Switch.
--- Samus’ story continues after the events of Metroid Fusion when she descends upon planet ZDR to investigate a mysterious transmission sent to the Galactic Federation. The remote planet has become overrun by vicious alien lifeforms and chilling mechanical menaces. Samus is more agile and capable than ever, but can she overcome the inhuman threat stalking the depths of ZDR?
--- Once DNA-extracting research machines, the imposing E.M.M.I. are now hunting Samus down. Tensions are high as you evade these E.M.M.I. to avoid a cruel death while finding a way to take them down. Find out what turned these robotic wonders into the scourge of ZDR and escape with your life.
--- Acquire new and familiar abilities as you traverse the many environments of this dangerous world. Parkour over obstacles, slide through tight spaces, counter enemies, and battle your way through the planet. Return to areas and use your new abilities to find upgrades, alternate paths, and a way forward. Explore the sprawling map, evade and destroy E.M.M.I. robots, and overcome the dread plaguing ZDR.',
--- 59.99,
--- 'Video Games',
--- 'Nintendo'),
---  ('Neo: The World Ends with You',
---   'July 27, 2021',
---   'https://m.media-amazon.com/images/I/81WAhppQOBS._SY445_.jpg',
---   'Delve into a vividly illustrated Shibuya, animated with style, music and monsters
--- Collect and wield hundreds of Psych abilities to battle surreal threats
--- Investigate the world around you and beat the the Reapers Game to Survive',
--- 27.94,
--- 'Video Games',
--- 'Square Enix'),
+In the early twentieth century, Russo-Japanese War veteran Saichi Sugimoto searches the wilderness of Hokkaido for a hoard of hidden gold. With only a cryptic map and a native Ainu girl to help him, Saichi must also deal with every murderous cutthroat, bandit and rogue who knows about the treasure!
+
+In the early twentieth century, Russo-Japanese War veteran Saichi “Immortal” Sugimoto scratches out a meager existence during the postwar gold rush in the wilderness of Hokkaido. When he stumbles across a map to a fortune in hidden Ainu gold, he sets off on a treacherous quest to find it. But Sugimoto is not the only interested party, and everyone who knows about the gold will kill to possess it! Faced with the harsh conditions of the northern wilderness, ruthless criminals and rogue Japanese soldiers, Sugimoto will need all his skills and luck—and the help of an Ainu girl named Asirpa—to survive.',
+12.99,
+'Anime/Manga',
+'VIZ Media LLC'
+),
+('Soul Eater',
+'October 27, 2009',
+'https://m.media-amazon.com/images/I/51xpXzvHsfL._SX497_BO1,204,203,200_.jpg',
+'Maka is a weapon meister, determined to turn her partner, a living scythe named Soul Eater, into a powerful death scythe - the ultimate weapon of Death himself! Charged with the task of collecting and devouring the tainted souls of ninety-nine humans and one witch, Maka and her fellow meisters strive to master their weapons as they face off against the bizarre and dangerous minions of the underworld. But the meisters own personal quirks may prove a bigger obstacle than any sultry enchantress!',
+10.91,
+'Anime/Manga',
+'Yen Press'
+),
+('Batman: The Long Halloween',
+'October 11, 2011',
+'https://m.media-amazon.com/images/I/51ZjyahjxaL._SX318_BO1,204,203,200_.jpg',
+'Taking place during Batmans early days of crime-fighting, this new edition of the classic mystery tells the story of a mysterious killer who murders his prey only on holidays. Working with District Attorney Harvey Dent and Lieutenant James Gordon, Batman races against the clock as he tries to discover who Holiday is before he claims his next victim each month. A mystery that has the reader continually guessing the identity of the killer, this story also ties into the events that transform Harvey Dent into Batmans deadly enemy, Two-Face. Collects BATMAN: THE LONG HALLOWEEN #1-13.',
+13.27,
+'Comics',
+'DC'),
+('Transmetropolitan Book One',
+'February 26, 2019',
+'https://m.media-amazon.com/images/P/B07ND2V83Q.01._SCLZZZZZZZ_SX500_.jpg',
+'In a future where consumerism, superficiality and corruption reign supreme, outlaw journalist Spider Jerusalem has decided to stop sitting by idly and watching the world crumble around him. Back in the saddle, no one in The City is safe.',
+20.99,
+'Comics',
+'Vertigo'),
+('Saga: Compendium One ',
+'August 27, 2019',
+'https://m.media-amazon.com/images/I/41NDNuOyUdL._SX323_BO1,204,203,200_.jpg',
+'THE ULTIMATE BINGE-READ
+
+Collecting the first nine volumes of the critically acclaimed, New York Times bestselling series into one massive paperback, this compendium tells the entire story (so far!) of a girl named Hazel and her star-crossed parents. Features over 1,300 pages of gorgeously graphic full-color artwork, including a new cover from Eisner Award-winning SAGA co-creator FIONA STAPLES.',
+35.00,
+'Comics',
+'Image Comics');
