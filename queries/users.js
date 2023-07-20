@@ -91,7 +91,7 @@ const loginUser = async (user) => {
                     const getProductByIndex = async (userId, productId) => {
                         try{
                             const product = await db.oneOrNone(
-                                `SELECT identification, products_id, users_id, 
+                                `SELECT indentifications, products_id, users_id, 
                                 product_name, image,
                                 price, quantity
                                 FROM users_products
@@ -115,7 +115,7 @@ const loginUser = async (user) => {
                             
                             try{
                                 const productsByUser = await db.any(
-                                    `SELECT identification, products_id, users_id,
+                                    `SELECT indentifications, products_id, users_id,
                                     product_name, image, price,quantity
                                     FROM users_products
                                     JOIN users
@@ -128,6 +128,7 @@ const loginUser = async (user) => {
                                     return productsByUser
                                 }
                                 catch(error){
+                                    console.log(error)
                                     return error
                                 }
                             }
@@ -155,6 +156,7 @@ const loginUser = async (user) => {
                                   }
                                   return await getAllProductsForUser(userId);
                                 } catch (err) {
+                                    console.log(err)
                                   return err;
                                 }
                               };

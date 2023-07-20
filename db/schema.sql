@@ -49,6 +49,7 @@ description TEXT
 DROP TABLE IF EXISTS users_products;
 
 CREATE TABLE users_products (
+  indentifications SERIAL PRIMARY KEY,
     users_id INTEGER,
     products_id INTEGER ,
     created_id INTEGER,
