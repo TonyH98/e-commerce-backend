@@ -9,7 +9,6 @@ CREATE TABLE products (
 id SERIAL PRIMARY KEY,
 product_name VARCHAR(100) NOT NULL,
 release_date TEXT NOT NULL,
-image TEXT DEFAULT 'https://dummyimage.com/400x400/6e6c6e/e9e9f5.png&text=No+Image',
 description TEXT NOT NULL,
 price decimal (6,2) NOT NULL,
 category VARCHAR(50) NOT NULL,
@@ -17,7 +16,12 @@ manufacturer TEXT NOT NULL
 );
 
 
-
+DROP TABLE IF EXISTS products_image;
+CREATE TABLE products_image(
+id SERIAL PRIMARY KEY,
+image TEXT,
+product_id INTEGER REFERENCES products(id)
+);
 
 
 DROP TABLE IF EXISTS users;
@@ -30,19 +34,6 @@ CREATE TABLE users(
     email TEXT UNIQUE NOT NULL,
     phonenumber TEXT NOT NULL,
     password TEXT NOT NULL
-);
-
-
-
-DROP TABLE IF EXISTS users_created_products;
-CREATE TABLE users_created_products(
-id SERIAL PRIMARY KEY,
-product_id INTEGER REFERENCES products(id),
-seller_id INTEGER REFERENCES users(id), 
-price decimal (6,2) NOT NULL,
-condition TEXT,
-ship_location TEXT, 
-description TEXT
 );
 
 

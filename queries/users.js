@@ -91,16 +91,26 @@ const loginUser = async (user) => {
                     const getProductByIndex = async (userId, productId) => {
                         try{
                             const product = await db.oneOrNone(
-                                `SELECT indentifications, products_id, users_id, 
-                                product_name, image,
-                                price, quantity
+                                `
+                                SELECT
+                                  indentifications,
+                                  products_id,
+                                  users_id,
+                                  product_name,
+                                  price,
+                                  quantity,
+                                  json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
                                 FROM users_products
-                                JOIN users
-                                ON users.id = users_products.users_id
-                                JOIN products
-                                ON products.id = users_products.products_id
+                                JOIN users ON users.id = users_products.users_id
+                                JOIN products ON products.id = users_products.products_id
+                                LEFT JOIN products_image ON products.id = products_image.product_id
                                 WHERE users_products.users_id = $1
-                                AND users_products.products_id = $2`,
+                                AND users_products.products_id = $2
+                                GROUP BY
+                                  users_products.indentifications,
+                                  products.id,
+                                  users.id
+                              `,
                                 [userId, productId]
                                 
                                 )
@@ -111,27 +121,37 @@ const loginUser = async (user) => {
                             }
                         }
                         
+                   
+
                         const getAllProductsForUser = async (id) => {
-                            
-                            try{
-                                const productsByUser = await db.any(
-                                    `SELECT indentifications, products_id, users_id,
-                                    product_name, image, price,quantity
-                                    FROM users_products
-                                    JOIN users
-                                    ON users.id = users_products.users_id
-                                    JOIN products
-                                    ON products.id = users_products.products_id
-                                    WHERE users_products.users_id = $1`,
-                                    id
-                                    );
-                                    return productsByUser
-                                }
-                                catch(error){
-                                    console.log(error)
-                                    return error
-                                }
+                            try {
+                              const productsByUser = await db.any(`
+                                SELECT
+                                  indentifications,
+                                  products_id,
+                                  users_id,
+                                  product_name,
+                                  price,
+                                  quantity,
+                                  json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
+                                FROM users_products
+                                JOIN users ON users.id = users_products.users_id
+                                JOIN products ON products.id = users_products.products_id
+                                LEFT JOIN products_image ON products.id = products_image.product_id
+                                WHERE users_products.users_id = $1
+                                GROUP BY
+                                  users_products.indentifications,
+                                  products.id,
+                                  users.id
+                              `, id);
+                          
+                              return productsByUser;
+                            } catch (error) {
+                              console.log(error);
+                              return error;
                             }
+                          };
+                          
                             
                             const addnewProductToUser = async (userId, productId , quantity = 1) => {
                                 try {
@@ -200,7 +220,7 @@ const editCartUser = async (userId, productId, product) => {
     // Check if the product already exists for the user
     const cartItem = await db.oneOrNone(
       `
-      SELECT up.*, p.price, p.image, p.product_name
+      SELECT up.*, p.price, p.product_name
       FROM users_products up
       JOIN products p ON up.products_id = p.id
       JOIN users u ON up.users_id = u.id
@@ -220,7 +240,7 @@ const editCartUser = async (userId, productId, product) => {
           WHERE up.users_id = $2
             AND up.products_id = $3
             AND p.id = $3
-          RETURNING up.*, p.price, p.image, p.product_name
+          RETURNING up.*, p.price, p.product_name
         `,
         [
           product.quantity,
@@ -235,7 +255,7 @@ const editCartUser = async (userId, productId, product) => {
         `
         INSERT INTO users_products (users_id, products_id, quantity)
         VALUES ($1, $2, $3)
-        RETURNING up.*, p.price, p.image, p.product_name
+        RETURNING up.*, p.price, p.product_name
         FROM users_products up
         JOIN products p ON up.products_id = p.id
         WHERE up.users_id = $1
@@ -269,67 +289,86 @@ const editCartUser = async (userId, productId, product) => {
         return !add;
     }
     catch (err){
+        console.log(err)
         return err
     }
 }
 
 
 const getAllFavoritesForUser = async (id) => {
-
-    try{
-        const favoritesByUser = await db.any(
-            `SELECT 
-            products_id, users_id, 
-            product_name, 
-            image, price,
-            favorites,
-            selected,
-            created
-            FROM users_favorite
-            JOIN users
-            ON users.id = users_favorite.users_id
-            JOIN products
-            ON products.id = users_favorite.products_id
-            WHERE users_favorite.users_id = $1`,
-            id
-        );
-        return favoritesByUser
+    try {
+      const favoritesByUser = await db.any(`
+        SELECT
+          products_id,
+          users_id,
+          product_name,
+          price,
+          favorites,
+          selected,
+          created,
+          json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
+        FROM users_favorite
+        JOIN users ON users.id = users_favorite.users_id
+        JOIN products ON products.id = users_favorite.products_id
+        LEFT JOIN products_image ON products.id = products_image.product_id
+        WHERE users_favorite.users_id = $1
+        GROUP BY
+          products_id,
+          users_id,
+          product_name,
+          price,
+          favorites,
+          selected,
+          created
+      `, id);
+      return favoritesByUser;
+    } catch (error) {
+      return error;
     }
-    catch(error){
-        return error
+  };
+  
+
+
+
+
+  const getFavoritebyIndex = async (userId, productId) => {
+    try {
+      const favorite = await db.oneOrNone(`
+        SELECT
+          products_id,
+          users_id,
+          product_name,
+          price,
+          favorites,
+          selected,
+          created,
+          json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
+        FROM users_favorite
+        JOIN users ON users.id = users_favorite.users_id
+        JOIN products ON products.id = users_favorite.products_id
+        LEFT JOIN products_image ON products.id = products_image.product_id
+        WHERE users_favorite.users_id = $1
+        AND users_favorite.products_id = $2
+        GROUP BY
+          products_id,
+          users_id,
+          product_name,
+          price,
+          favorites,
+          selected,
+          created
+      `, [userId, productId]);
+  
+      if (!favorite) {
+        throw new Error(`No favorite found for user ID ${userId} and product ID ${productId}`);
+      }
+  
+      return favorite;
+    } catch (error) {
+      throw new Error(error.message);
     }
-    }
-
-
-
-
-    const getFavoritebyIndex = async (userId, productId) => {
-        try {
-            const favorite = await db.oneOrNone(
-                `SELECT 
-                products_id, users_id, 
-                product_name, image, price,
-                favorites,selected,
-                created
-                FROM users_favorite
-                JOIN users
-                 ON users.id = users_favorite.users_id
-                JOIN products
-                ON products.id = users_favorite.products_id
-                WHERE users_favorite.users_id = $1
-                AND users_favorite.products_id = $2`,
-                [userId, productId]
-            );
-    
-            if (!favorite) {
-                throw new Error(`No favorite found for user ID ${userId} and product ID ${productId}`);
-            }
-    
-            return favorite;
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    }
+  };
+  
     
 
 
@@ -354,18 +393,16 @@ const getAllFavoritesForUser = async (id) => {
               UPDATE products p
               SET 
                 product_name=$1,
-                image=$2,
-                price=$3,
-                favorites=$4,
+                price=$2,
+                favorites=$3,
               FROM users_favorite up
               WHERE p.id = up.products_id 
-                AND up.users_id=$5
-                AND up.products_id = $6
+                AND up.users_id=$4
+                AND up.products_id = $5
               RETURNING *
             `,
             [
               product.product_name,
-              product.image,
               product.price,
               product.favorites,
               userId,
@@ -407,30 +444,37 @@ const getAllFavoritesForUser = async (id) => {
     
     
     const getAllSearchForUser = async (id) => {
-    
-        try{
-            const favoritesByUser = await db.any(
-                `SELECT 
-                products_id, users_id, 
-                product_name, 
-                image, price,
-                created,
-                selected, 
-                added
-                FROM users_search
-                JOIN users
-                ON users.id = users_search.users_id
-                JOIN products
-                ON products.id = users_search.products_id
-                WHERE users_search.users_id = $1`,
-                id
-            );
-            return favoritesByUser
+        try {
+          const favoritesByUser = await db.any(`
+            SELECT
+              products_id,
+              users_id,
+              product_name,
+              price,
+              created,
+              selected,
+              added,
+              json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
+            FROM users_search
+            JOIN users ON users.id = users_search.users_id
+            JOIN products ON products.id = users_search.products_id
+            LEFT JOIN products_image ON products.id = products_image.product_id
+            WHERE users_search.users_id = $1
+            GROUP BY
+              products_id,
+              users_id,
+              product_name,
+              price,
+              created,
+              selected,
+              added
+          `, id);
+          return favoritesByUser;
+        } catch (error) {
+          return error;
         }
-        catch(error){
-            return error
-        }
-        }
+      };
+      
     
     
         const deleteSearchFromUsers = async (userId , productId) => {
@@ -454,17 +498,15 @@ const getAllFavoritesForUser = async (id) => {
                   UPDATE products p
                   SET 
                     product_name=$1,
-                    image=$2,
-                    price=$3
+                    price=$2
                   FROM users_search up
                   WHERE p.id = up.products_id 
-                    AND up.users_id=$4
-                    AND up.products_id = $5
+                    AND up.users_id=$3
+                    AND up.products_id = $4
                   RETURNING *
                 `,
                 [
                   product.product_name,
-                  product.image,
                   product.price,
                   userId,
                   productId,
@@ -487,16 +529,28 @@ const getAllFavoritesForUser = async (id) => {
                       `SELECT 
                       products_id, users_id, 
                       product_name, 
-                      image, price,
+                      price,
                       created,
                       selected,
-                      added
+                      added,
+                      json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
                       FROM users_purchases
                       JOIN users
                       ON users.id = users_purchases.users_id
                       JOIN products
                       ON products.id = users_purchases.products_id
-                      WHERE users_purchases.users_id = $1`,
+                      LEFT JOIN products_image ON products.id = products_image.product_id
+                      WHERE users_purchases.users_id = $1
+                      GROUP BY
+              products_id,
+              users_id,
+              product_name,
+              price,
+              created,
+              selected,
+              added
+                      
+                      `,
                       id
                       );
                       return purchaseByUser
@@ -529,17 +583,28 @@ const getAllFavoritesForUser = async (id) => {
                                 `SELECT 
                                 products_id, users_id, 
                                 product_name, 
-                                image, price,
+                                price,
                                 created,
                                 selected,
-                                added
+                                added,
+                                json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
                                 FROM users_purchases
                                 JOIN users
                                 ON users.id = users_purchases.users_id
                                 JOIN products
                                 ON products.id = users_purchases.products_id
+                                LEFT JOIN products_image ON products.id = products_image.product_id
                                 WHERE users_purchases.users_id = $1
-                                AND users_purchases.products_id = $2`,
+                                AND users_purchases.products_id = $2
+                                GROUP BY
+                                products_id,
+                                users_id,
+                                product_name,
+                                price,
+                                created,
+                                selected,
+                                added
+                                `,
                                 [userId, productId]
                                 );
                                 

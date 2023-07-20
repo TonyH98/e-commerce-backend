@@ -1,34 +1,48 @@
 const db = require("../db/dbConfig")
 
 const getAllProducts = async () => {
-try{
-const allProducts = await db.any('SELECT * FROM products')
-return allProducts
-}
-catch(error){
-    return error;
-}
-}
+  try {
+      const allProducts = await db.any(`
+          SELECT products.*,
+          json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS image
+          FROM products
+          LEFT JOIN products_image ON products.id = products_image.product_id
+          GROUP BY products.id
+      `);
+      return allProducts;
+  } catch (error) {
+      return error;
+  }
+};
+
+
 
 
 
 const getProduct = async (id) => {
-try{
-    const oneProduct = await db.one('SELECT * FROM products WHERE id=$1', id)
-    return oneProduct
-}
-catch(error){
-    return error
-}
-}
+  try {
+      const oneProduct = await db.one(`
+          SELECT products.*, 
+          json_agg(json_build_object('id', products_image.id, 'image', products_image.image)) AS images
+          FROM products 
+          LEFT JOIN products_image ON products.id = products_image.product_id
+          WHERE products.id = $1
+          GROUP BY products.id
+      `, id);
+      return oneProduct;
+  } catch (error) {
+      return error;
+  }
+};
+
 
 
 
 const createProduct = async (product) => {
     try {
       const newProduct = await db.one(
-        "INSERT INTO products (product_name, price_id, release_date , image, description, price, category,manufacturer) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
-        [product.product_name, product.price_id, product.release_date, product.image, product.description, product.price, product.category, product.manufacturer]
+        "INSERT INTO products (product_name, price_id, release_date ,  description, price, category,manufacturer) VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+        [product.product_name, product.price_id, product.release_date, product.description, product.price, product.category, product.manufacturer]
       );
       return newProduct;
     } catch (error) {
