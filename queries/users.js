@@ -240,7 +240,10 @@ const editCartUser = async (userId, productId, product) => {
           WHERE up.users_id = $2
             AND up.products_id = $3
             AND p.id = $3
-          RETURNING up.*, p.price, p.product_name
+          RETURNING up.*, p.price, p.product_name, 
+          (SELECT json_agg(json_build_object('id', pi.id, 'image', pi.image)) 
+           FROM products_image pi 
+           WHERE pi.product_id = $3) AS images
         `,
         [
           product.quantity,
@@ -255,11 +258,10 @@ const editCartUser = async (userId, productId, product) => {
         `
         INSERT INTO users_products (users_id, products_id, quantity)
         VALUES ($1, $2, $3)
-        RETURNING up.*, p.price, p.product_name
-        FROM users_products up
-        JOIN products p ON up.products_id = p.id
-        WHERE up.users_id = $1
-          AND up.products_id = $2;
+        RETURNING up.*, p.price, p.product_name, 
+        (SELECT json_agg(json_build_object('id', pi.id, 'image', pi.image)) 
+         FROM products_image pi 
+         WHERE pi.product_id = $2) AS images
         `,
         [userId, productId, product.quantity]
       );
@@ -270,6 +272,7 @@ const editCartUser = async (userId, productId, product) => {
     throw new Error('Failed to update user cart.');
   }
 };
+
 
 
   const addFavoriteToUser = async (userId, productsId) =>{
