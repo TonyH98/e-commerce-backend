@@ -131,6 +131,7 @@ CREATE TABLE reviews (
  title TEXT,
  content TEXT,
  rating NUMERIC,
+ image TEXT,
  CHECK (rating >= 0 AND rating <= 5),
  product_id INTEGER REFERENCES products (id),
  user_id INTEGER REFERENCES users (id)
