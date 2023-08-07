@@ -4,6 +4,11 @@ const bcrypt = require('bcrypt')
 
 const saltRounds = 10
 
+
+const nodemailer = require('nodemailer')
+
+const password = process.env.Email_Password
+
 const getAllUsers = async () => {
     try{
         const allUsers = await db.any("SELECT * FROM users")
@@ -622,32 +627,61 @@ const getAllFavoritesForUser = async (id) => {
                         }
                         
                         
+                        const transporter = nodemailer.createTransport({
+                          host: 'smtp.gmail.com',
+                          port: 465,
+                          secure: true,
+                          auth: {
+                            user: 'collection.vault.receipt@gmail.com',
+                            pass: password
+                          }
+                        });
+
+
+                        async function sendEmail(toEmail, firstName) {
+                          const info = await transporter.sendMail({
+                            from: '<collection.vault.receipt@gmail.com>',
+                            to: toEmail,
+                            subject: "Post Mention",
+                            text: `Hello, ${firstName} \n Thank you for your purchase.`
+                          });
                         
+                          console.log("Message sent: " + info.messageId);
+                        }
                         
-                                  const addPurchaseToUser = async (userId, productsId, added=true, selected = false) => {
-                                    try {
-                                            const currentDate = new Date().toLocaleDateString('en-US', { 
-                                                month: '2-digit', 
-                                                day: '2-digit', 
-                                                year: 'numeric' 
-                                            }).split('/').join('/');
+                                const addPurchaseToUser = async (userId, productsId, added=true, selected = false) => {
+                                  try {
+                                          const currentDate = new Date().toLocaleDateString('en-US', { 
+                                              month: '2-digit', 
+                                              day: '2-digit', 
+                                              year: 'numeric' 
+                                          }).split('/').join('/');
+                                          
+                                        const addPurchases = await db.tx(async(t) => {
+
+                                          const insertPurchase = await t.none(
+                                            'INSERT INTO users_purchases(created, selected, users_id, products_id, added) VALUES($1, $2, $3, $4, $5)',
+                                            [currentDate, selected, userId, productsId, added]
+
+                                          )
+
                                             
-                                            await db.none(
-                                                'INSERT INTO users_purchases(created, selected, users_id, products_id, added) VALUES($1, $2, $3, $4, $5)',
-                                                [currentDate, selected, userId, productsId, added]
-                                            );
-                                            
-                                            return true
-                                            
-                                        
-                                     }
-                                    catch (err) {
-                                        console.error(err)
-                                        return false
-                                    }
-                                };
-                        
-                        
+                                            const user = await t.one(
+                                              `SELECT firstname , email FROM users WHERE id=$1`, userId
+                                            )
+                                          if(user){
+                                              await sendEmail(user.email, user.firstname)
+                                          }
+
+                                          return insertPurchase
+                                        })
+                                      return addPurchases
+                                   }
+                                  catch (err) {
+                                      console.error(err)
+                                      return false
+                                  }
+                              };
                         
                         
                         module.exports={
