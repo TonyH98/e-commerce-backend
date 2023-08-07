@@ -55,8 +55,8 @@ const deleteReview = async (id) => {
 const updateReview = async (id, review) => {
     try {
       const updatedReview = await db.one(
-        "UPDATE reviews SET reviewer=$1, title=$2, content=$3, rating=$4, product_id=$5, user_id=$6 WHERE id=$7 RETURNING *",
-        [review.reviewer, review.title, review.content, review.rating, review.product_id, review.user_id, id]
+        "UPDATE reviews SET reviewer=$1, title=$2, content=$3, rating=$4, image=$5, product_id=$6, user_id=$7 WHERE id=$8 RETURNING *",
+        [review.reviewer, review.title, review.content, review.rating, review.image, review.product_id, review.user_id, id]
       );
       return updatedReview;
     } catch (error) {

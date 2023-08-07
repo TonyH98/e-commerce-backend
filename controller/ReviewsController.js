@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage,
   limits: {
-    fileSize: 20 * 1024 * 1024, // 20MB limit
+    fileSize: Infinity
   },
 });
 
@@ -66,7 +66,7 @@ reviews.delete("/:id", async (req, res) => {
   }
 });
 
-reviews.put("/:id", async (req, res) => {
+reviews.put("/:id", upload.single('image'), async (req, res) => {
   const { id } = req.params;
   const updatedReviews = await updateReview(id, req.body);
   res.status(200).json(updatedReviews);
