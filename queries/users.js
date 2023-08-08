@@ -638,12 +638,12 @@ const getAllFavoritesForUser = async (id) => {
                         });
 
 
-                        async function sendEmail(toEmail, firstName) {
+                        async function sendEmail(toEmail, firstName, item, price) {
                           const info = await transporter.sendMail({
                             from: '<collection.vault.receipt@gmail.com>',
                             to: toEmail,
                             subject: "Post Mention",
-                            text: `Hello, ${firstName} \n Thank you for your purchase.`
+                            text: `Hello, ${firstName} \n Thank you for your purchase of ${item} for ${price}`
                           });
                         
                           console.log("Message sent: " + info.messageId);
@@ -665,12 +665,14 @@ const getAllFavoritesForUser = async (id) => {
 
                                           )
 
-                                            
+                                            const purchase = await t.one(
+                                              `SELECT product_name, price FROM products WHERE id=$1`, productsId
+                                            )
                                             const user = await t.one(
                                               `SELECT firstname , email FROM users WHERE id=$1`, userId
                                             )
-                                          if(user){
-                                              await sendEmail(user.email, user.firstname)
+                                          if(user && purchase){
+                                              await sendEmail(user.email, user.firstname, purchase.product_name, purchase.price)
                                           }
 
                                           return insertPurchase
