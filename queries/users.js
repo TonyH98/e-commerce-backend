@@ -649,41 +649,29 @@ const getAllFavoritesForUser = async (id) => {
                           console.log("Message sent: " + info.messageId);
                         }
                         
-                                const addPurchaseToUser = async (userId, productsId, added=true, selected = false) => {
-                                  try {
-                                          const currentDate = new Date().toLocaleDateString('en-US', { 
-                                              month: '2-digit', 
-                                              day: '2-digit', 
-                                              year: 'numeric' 
-                                          }).split('/').join('/');
-                                          
-                                        const addPurchases = await db.tx(async(t) => {
-
-                                          const insertPurchase = await t.none(
-                                            'INSERT INTO users_purchases(created, selected, users_id, products_id, added) VALUES($1, $2, $3, $4, $5)',
-                                            [currentDate, selected, userId, productsId, added]
-
-                                          )
-
-                                            const purchase = await t.one(
-                                              `SELECT product_name, price FROM products WHERE id=$1`, productsId
-                                            )
-                                            const user = await t.one(
-                                              `SELECT firstname , email FROM users WHERE id=$1`, userId
-                                            )
-                                          if(user && purchase){
-                                              await sendEmail(user.email, user.firstname, purchase.product_name, purchase.price)
-                                          }
-
-                                          return insertPurchase
-                                        })
-                                      return addPurchases
-                                   }
-                                  catch (err) {
-                                      console.error(err)
-                                      return false
-                                  }
-                              };
+                        const addPurchaseToUser = async (userId, productId, added = true, selected = false) => {
+                          try {
+                              const currentDate = new Date().toLocaleDateString('en-US', {
+                                  month: '2-digit',
+                                  day: '2-digit',
+                                  year: 'numeric'
+                              }).split('/').join('/');
+                      
+                               await db.none(
+                                  `INSERT INTO users_purchases(created, selected, users_id, products_id, added) 
+                                  VALUES($1, $2, $3, $4, $5)`,
+                                  [currentDate, selected, userId, productId, added]
+                              );
+                      
+                              return true;
+                          } catch (err) {
+                              console.error(err);
+                              return false;
+                          }
+                      };
+                      
+                      
+                      
                         
                         
                         module.exports={
